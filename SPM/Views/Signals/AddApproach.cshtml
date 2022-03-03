@@ -16,7 +16,6 @@
             @Html.HiddenFor(model => model.SignalID, htmlAttributes: new { Name = Model.Index + "SignalID" })
             @Html.HiddenFor(model => model.VersionID, htmlAttributes: new { Name = Model.Index + "VersionID" })
             @Html.HiddenFor(model => model.Index, new { @id = "Index" + Model.ApproachID })
-            @Html.HiddenFor(model => model.MPH, new { @class = "mph_" + @Model.ApproachID, Name = Model.Index + "MPH" })
             <div class="row">
             <div class="form-group-configuration-tool  form-group col-md-2">
                 @Html.LabelFor(model => model.DirectionTypeID, "Direction", htmlAttributes: new { @class = "control-label" })
@@ -82,6 +81,10 @@
                     <div class="input-group">
                         @Html.EditorFor(model => model.PedestrianDetectors, new { htmlAttributes = new { Name = Model.Index + "PedestrianDetectors", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.PedestrianDetectors, "", new { id = "PedestrianDetectors-error", @class = "text-danger" })
+                    <div style="text-align:center;">
+                        <label for=model.MPH class="control-label mph"> Approach Speed MPH</label>
+                        @Html.EditorFor(model => model.MPH, new { htmlAttributes = new { Name = Model.Index + "Approach Speed MPH", @class = "form -control" } })
+                        @Html.ValidationMessageFor(model => model.MPH, "", new { id = "MPH-error", @class = "text-danger" })
                     </div>
                 </div>
             </div>
