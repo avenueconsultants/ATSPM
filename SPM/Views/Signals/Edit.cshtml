@@ -102,6 +102,12 @@
                         @Html.EditorFor(model => model.Enabled, new { @class = "control-label" })
                     </div>
                 </div>
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.Pedsare1to1, htmlAttributes: new { @class = "control-label" })
+                    <div class="center-block">
+                        @Html.EditorFor(model => model.Pedsare1to1, new { @class = "control-label" })
+                    </div>
+                </div>
                 <div class="col-md-6">
                     <br />
                     @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label" })
@@ -115,7 +121,7 @@
                         @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Comments, "", new { id = "Comments-error", @class = "text-danger" })
                     </div>
-                    <br/>
+                    <br />
                 </div>
                 <div class="col-md-12">
                     <div id="ConfigurationTable" role="tablist" aria-multiselectable="true" class="col-md-12">
