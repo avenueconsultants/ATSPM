@@ -73,7 +73,7 @@ namespace AtspmApi.Models
 
         [Display(Name = "Ped Detector(s)")]
         [DataMember]
-        public List<int> PedestrianDetectors { get; set; }
+        public string PedestrianDetectors { get; set; }
 
         [DataMember]
         public virtual ICollection<Detector> Detectors { get; set; }
