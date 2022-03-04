@@ -105,6 +105,10 @@
                     <th>
                         @Html.LabelFor(model => model.Approaches.First().IsPermissivePhaseOverlap, new { id = "IsPermissivePhaseOverlapHeader" })
                     </th>
+                    <th>
+                        @Html.LabelFor(model => model.Approaches.First().MPH, new { id = "MPHHeader" })
+                    </th>
+
                 </tr>
 
                 @foreach (var item in Model.Approaches)
@@ -128,6 +132,10 @@
                         <td>
                             @Html.CheckBoxFor(modelItem => item.IsPermissivePhaseOverlap, new { aria_labelledby = "IsPermissivePhaseOverlapHeader" })
                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MPH, new {aria_labelledby = "MPHHeader" })
+                        </td>
+                    
                     </tr>
                 }
             </table>
