@@ -663,10 +663,6 @@
     <Compile Include="Migrations\202105132005112_ReCreateAggTables.designer.cs">
       <DependentUpon>202105132005112_ReCreateAggTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202203032144380_TAPedestrianPhases.cs" />
-    <Compile Include="Migrations\202203032144380_TAPedestrianPhases.designer.cs">
-      <DependentUpon>202203032144380_TAPedestrianPhases.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\ApplicationSettings.cs" />
     <Compile Include="Models\PhasePedAggregation.cs" />
@@ -1124,9 +1120,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105132005112_ReCreateAggTables.resx">
       <DependentUpon>202105132005112_ReCreateAggTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202203032144380_TAPedestrianPhases.resx">
-      <DependentUpon>202203032144380_TAPedestrianPhases.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\CustomStuffForExistingUpgrade.txt" />
     <EmbeddedResource Include="Migrations\FillDetectorTypeMetricTypesTable.SQL" />
