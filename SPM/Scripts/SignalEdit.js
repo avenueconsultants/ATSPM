@@ -632,3 +632,14 @@ function ShowHideControl(obj, checked) {
         }
     }
 }
+
+function UpdatePedsare1to1(pedcheckbox, pedphasetextbox, protectedphasetextbox) {
+    if (pedcheckbox.checked) {
+        pedphasetextbox.value = protectedphasetextbox.value
+        //also make pedphasetextbox grey
+    }
+    else {
+        pedphasetextbox.value = "" //would be better if we save a value and have the computer "remember"
+        //also make it normal-colored
+    }
+}
