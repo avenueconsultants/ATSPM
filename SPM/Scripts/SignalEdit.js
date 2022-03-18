@@ -633,10 +633,15 @@ function ShowHideControl(obj, checked) {
     }
 }
 
-function UpdatePedsare1to1(pedcheckbox, pedphasetextbox, protectedphasetextbox) {
-    if (pedcheckbox.checked) {
-        pedphasetextbox.value = protectedphasetextbox.value
-        //also make pedphasetextbox grey
+function UpdatePedsare1to1() {
+    var pedchecked = $("#Pedsare1to1-value").val();
+    var protphase = $("#ProtectedPhaseNumber-value").val();
+    var pedphase = $("#PedestrianPhaseNumber-value").val();
+
+    if (pedchecked) {
+        pedphase = protphase;
+        //also make pedphasetextbox grey  - disable
+        //uses a default value
     }
     else {
         pedphasetextbox.value = "" //would be better if we save a value and have the computer "remember"
