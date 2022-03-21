@@ -633,18 +633,22 @@ function ShowHideControl(obj, checked) {
     }
 }
 
+var IsPed1to1Checked = true;
+
 function UpdatePedsare1to1() {
     var pedchecked = $("#Pedsare1to1-value").val();
     var protphase = $("#ProtectedPhaseNumber-value").val();
     var pedphase = $("#PedestrianPhaseNumber-value").val();
 
     if (pedchecked) {
+        IsPed1to1Checked = true;
         pedphase = protphase;
         //also make pedphasetextbox grey  - disable
-        //uses a default value
+        //uses a default value  - bind
     }
     else {
-        pedphasetextbox.value = "" //would be better if we save a value and have the computer "remember"
+        IsPed1to1Checked = false;
+        pedphasetextbox.value = ""; //would be better if we save a value and have the computer "remember"
         //also make it normal-colored
     }
 }
