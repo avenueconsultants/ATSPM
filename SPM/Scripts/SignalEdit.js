@@ -633,18 +633,15 @@ function ShowHideControl(obj, checked) {
     }
 }
 
-var IsPed1to1Checked = true;
-
 function UpdatePedsare1to1() {
     var pedchecked = document.getElementById('Pedsare1to1-value');
     var pedphase = document.getElementById('PedestrianPhaseNumber-value');
     var protphase = document.getElementById('ProtectedPhaseNumber-value');
     if (pedchecked.checked) {
         pedphase.disabled = true;
-        pedphase.placeholder = protphase.value
+        pedphase.value = protphase.value
     }
     else {
         pedphase.disabled = false;
-        pedphase.placeholder = $("PedestrianPhaseNumber-value").val();
     }
 }
