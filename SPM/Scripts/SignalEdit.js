@@ -635,13 +635,27 @@ function ShowHideControl(obj, checked) {
 
 function UpdatePedsare1to1() {
     var pedchecked = document.getElementById('Pedsare1to1-value');
-    var pedphase = document.getElementById('PedestrianPhaseNumber-value');
-    var protphase = document.getElementById('ProtectedPhaseNumber-value');
+    var pedphases = document.getElementsByClassName('ped-phase-value');
+    var protphases = document.getElementsByClassName('protected-phase-value');
     if (pedchecked.checked) {
-        pedphase.disabled = true;
-        pedphase.value = protphase.value
+        for (var i = 0; i < pedphases.length; i++) {
+            pedphases[i].disabled = true;
+            pedphases[i].value = protphases[i].value;
+        }
+        //pedphase.forEach((element) => {
+        //    element.disabled = true;
+        //    element.value = protphase.value;
+        //})
+        ////pedphase.disabled = true;
+        ////pedphase.value = protphase.value;
     }
     else {
-        pedphase.disabled = false;
+        for (var i = 0; i < pedphases.length; i++) {
+            pedphases[i].disabled = false;
+        }
+        //pedphase.forEach((element) => {
+        //    element.disabled = false;
+        //})
+        ////pedphase.disabled = false;
     }
 }
