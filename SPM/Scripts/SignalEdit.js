@@ -642,20 +642,10 @@ function UpdatePedsare1to1() {
             pedphases[i].disabled = true;
             pedphases[i].value = protphases[i].value;
         }
-        //pedphase.forEach((element) => {
-        //    element.disabled = true;
-        //    element.value = protphase.value;
-        //})
-        ////pedphase.disabled = true;
-        ////pedphase.value = protphase.value;
     }
     else {
         for (var i = 0; i < pedphases.length; i++) {
             pedphases[i].disabled = false;
         }
-        //pedphase.forEach((element) => {
-        //    element.disabled = false;
-        //})
-        ////pedphase.disabled = false;
     }
 }
