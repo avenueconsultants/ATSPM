@@ -57,7 +57,7 @@
             <div class="form-group-configuration-tool  form-group col-md-2">
                 @Html.LabelFor(model => model.PedestrianDetectors, htmlAttributes: new { @class = "control-label" })
                 <div class="input-group">
-                    @Html.EditorFor(model => model.PedestrianDetectors, new { htmlAttributes = new { @class = "", placeholder = "Comma or Dash List" } })
+                    @Html.EditorFor(model => model.PedestrianDetectors, new { htmlAttributes = new { @class = "ped-detectors-string", placeholder = "Comma or Dash List" } })
                     @Html.ValidationMessageFor(model => model.PedestrianDetectors, "", new { id = "PedestrianDetectors-error", @class = "text-danger" })
                 </div>
             </div>
@@ -71,7 +71,7 @@
             <div class="form-group-configuration-tool  text-center form-group col-md-2">
                 @Html.LabelFor(model => model.IsProtectedPhaseOverlap, htmlAttributes: new {@class = "control-label"})
                 <div style="text-align: center;">
-                    @Html.EditorFor(model => model.IsProtectedPhaseOverlap, new {htmlAttributes = new {@class = "form -control"}})
+                    @Html.EditorFor(model => model.IsProtectedPhaseOverlap, new {htmlAttributes = new {@class = "form -control" } })
                     @Html.ValidationMessageFor(model => model.IsProtectedPhaseOverlap, "", new {id = "IsProtectedPhaseOverlap-error", @class = "text-danger"})
                 </div>
             </div>
@@ -85,7 +85,7 @@
             <div class="form-group-configuration-tool  text-center form-group col-md-2">
                 @Html.LabelFor(model => model.IsPedestrianPhaseOverlap, htmlAttributes: new { @class = "control-label" })
                 <div style="text-align: center;">
-                    @Html.EditorFor(model => model.IsPedestrianPhaseOverlap, new { htmlAttributes = new { @class = "form -control" } })
+                    @Html.EditorFor(model => model.IsPedestrianPhaseOverlap, new { htmlAttributes = new { @class = "form -control ped-overlap-checkbox" } })
                     @Html.ValidationMessageFor(model => model.IsPedestrianPhaseOverlap, "", new { id = "IsPedestrianPhaseOverlap-error", @class = "text-danger" })
                 </div>
             </div>

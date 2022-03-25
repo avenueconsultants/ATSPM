@@ -637,15 +637,28 @@ function UpdatePedsare1to1() {
     var pedchecked = document.getElementById('Pedsare1to1-value');
     var pedphases = document.getElementsByClassName('ped-phase-value');
     var protphases = document.getElementsByClassName('protected-phase-value');
+    var peddetectors = document.getElementsByClassName('ped-detectors-string');
+    var pedoverlap = document.getElementsByClassName('ped-overlap-checkbox');
+    //if All Peds are 1:1 is checked, then disable ped phase and set equal to protected phase
     if (pedchecked.checked) {
         for (var i = 0; i < pedphases.length; i++) {
             pedphases[i].disabled = true;
             pedphases[i].value = protphases[i].value;
+            peddetectors[i].disabled = true;
+            peddetectors[i].value = protphases[i].value;
+            pedoverlap[i].disabled = true;
+            pedoverlap[i].checked = false;
         }
     }
+    //if All Peds are 1:1 is not checked, then enable editing for ped phase and make the ped phase box blank
     else {
         for (var i = 0; i < pedphases.length; i++) {
             pedphases[i].disabled = false;
+            pedphases[i].value = "";
+            peddetectors[i].disabled = false;
+            peddetectors[i].value = "";
+            pedoverlap[i].disabled = false;
+            pedoverlap[i].checked = false;
         }
     }
 }
