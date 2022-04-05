@@ -639,25 +639,25 @@ function UpdatePedsare1to1() {
     var protphases = document.getElementsByClassName('protected-phase-value');
     var peddetectors = document.getElementsByClassName('ped-detectors-string');
     var pedoverlap = document.getElementsByClassName('ped-overlap-checkbox');
-    //if All Peds are 1:1 is checked, then disable ped phase and set equal to protected phase
+    //if All Peds are 1:1 is checked, then disable ped fields and set ped phase equal to protected phase
     if (pedchecked.checked) {
         for (var i = 0; i < pedphases.length; i++) {
-            pedphases[i].disabled = true;
+            pedphases[i].setAttribute("readonly", "readonly");
             pedphases[i].value = protphases[i].value;
-            peddetectors[i].disabled = true;
+            peddetectors[i].setAttribute("readonly", "readonly");
             peddetectors[i].value = protphases[i].value;
-            pedoverlap[i].disabled = true;
+            pedoverlap[i].setAttribute("readonly", "readonly");
             pedoverlap[i].checked = false;
         }
     }
-    //if All Peds are 1:1 is not checked, then enable editing for ped phase and make the ped phase box blank
+    //if All Peds are 1:1 is not checked, then enable editing for ped fields and make them blank
     else {
         for (var i = 0; i < pedphases.length; i++) {
-            pedphases[i].disabled = false;
+            pedphases[i].removeAttribute("readonly");
             pedphases[i].value = "";
-            peddetectors[i].disabled = false;
+            peddetectors[i].removeAttribute("readonly");
             peddetectors[i].value = "";
-            pedoverlap[i].disabled = false;
+            pedoverlap[i].removeAttribute("readonly");
             pedoverlap[i].checked = false;
         }
     }
