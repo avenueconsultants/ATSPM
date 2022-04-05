@@ -290,6 +290,7 @@ namespace SPM.Controllers
             signal.Start = DateTime.Today;          
             signal.Note = "Create New";
             signal.Enabled = true;
+            signal.Pedsare1to1 = true;
             signal.VersionList = new List<Signal>();
             signal.VersionActionId = 1;
             return signal;
