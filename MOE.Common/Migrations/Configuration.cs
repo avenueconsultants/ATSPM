@@ -1122,15 +1122,6 @@ namespace MOE.Common.Migrations
                 },
                 new MetricType
                 {
-                    MetricID = 31,
-                    ChartName = "Left Turn Gap Analysis",
-                    Abbreviation = "LTGA",
-                    ShowOnWebsite = true,
-                    ShowOnAggregationSite = false,
-                    DisplayOrder = 112
-                },
-                new MetricType
-                {
                     MetricID = 32,
                     ChartName = "Wait Time",
                     Abbreviation = "WT",
