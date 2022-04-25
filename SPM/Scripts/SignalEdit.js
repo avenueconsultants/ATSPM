@@ -646,8 +646,9 @@ function UpdatePedsare1to1() {
             pedphases[i].value = protphases[i].value;
             peddetectors[i].setAttribute("readonly", "readonly");
             peddetectors[i].value = protphases[i].value;
-            pedoverlap[i].setAttribute("readonly", "readonly");
+            //pedoverlap[i].setAttribute("readonly", "readonly");
             pedoverlap[i].checked = false;
+            //pedoverlap[i].addClass("greycheckbox");
         }
     }
     //if All Peds are 1:1 is not checked, then enable editing for ped fields and make them blank
@@ -657,7 +658,18 @@ function UpdatePedsare1to1() {
             pedphases[i].value = "";
             peddetectors[i].removeAttribute("readonly");
             peddetectors[i].value = "";
-            pedoverlap[i].removeAttribute("readonly");
+            //pedoverlap[i].removeAttribute("readonly");
+            pedoverlap[i].checked = false;
+        }
+    }
+}
+
+function CheckboxReadOnly() {
+    var pedchecked = document.getElementById('Pedsare1to1-value');
+    var pedoverlap = document.getElementsByClassName('ped-overlap-checkbox');
+    if (pedchecked.checked) {
+       // return false;
+        for (var i = 0; i < pedoverlap.length; i++) {
             pedoverlap[i].checked = false;
         }
     }

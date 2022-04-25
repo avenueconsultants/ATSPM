@@ -85,7 +85,7 @@
             <div class="form-group-configuration-tool  text-center form-group col-md-2">
                 @Html.LabelFor(model => model.IsPedestrianPhaseOverlap, htmlAttributes: new { @class = "control-label" })
                 <div style="text-align: center;">
-                    @Html.CheckBoxFor(model => model.IsPedestrianPhaseOverlap, new { htmlAttributes = new { @class = "form -control ped-overlap-checkbox", @readonly = Model.Signal.Pedsare1to1 ? "readonly" : "" } })
+                    @Html.EditorFor(model => model.IsPedestrianPhaseOverlap, new { htmlAttributes = new { @class = "form -control ped-overlap-checkbox", @onclick = "return CheckboxReadOnly()" }  } )
                     @Html.ValidationMessageFor(model => model.IsPedestrianPhaseOverlap, "", new { id = "IsPedestrianPhaseOverlap-error", @class = "text-danger"})
                 </div>
             </div>
