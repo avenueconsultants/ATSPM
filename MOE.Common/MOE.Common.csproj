@@ -706,6 +706,9 @@
     <Compile Include="Models\PhaseTerminationAggregation.cs" />
     <Compile Include="Models\DetectorEventCountAggregation.cs" />
     <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\Repositories\AreaRepositoryFactory.cs" />
+    <Compile Include="Models\Repositories\AreaRepository.cs" />
+    <Compile Include="Models\Repositories\IAreaRepository.cs" />
     <Compile Include="Models\Repositories\IPhasePedAggregationRepository.cs" />
     <Compile Include="Models\Repositories\IPhaseLeftTurnGapAggregationRepository.cs" />
     <Compile Include="Models\Repositories\IJurisdictionRepository.cs" />
