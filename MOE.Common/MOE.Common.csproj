@@ -495,6 +495,11 @@
     <Compile Include="Business\WCFServiceLibrary\ApproachAggregationMetricOptions.cs" />
     <Compile Include="Business\WCFServiceLibrary\ApproachSplitFailAggregationOptions.cs" />
     <Compile Include="Business\WCFServiceLibrary\WaitTimeOptions.cs" />
+    <Compile Include="Migrations\202204271748218_AddAreaAndUpdateSignals.cs" />
+    <Compile Include="Migrations\202204271748218_AddAreaAndUpdateSignals.designer.cs">
+      <DependentUpon>202204271748218_AddAreaAndUpdateSignals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Area.cs" />
     <Compile Include="Data\MOE.cs">
       <DependentUpon>MOE.xsd</DependentUpon>
     </Compile>
@@ -1144,6 +1149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105132005112_ReCreateAggTables.resx">
       <DependentUpon>202105132005112_ReCreateAggTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204271748218_AddAreaAndUpdateSignals.resx">
+      <DependentUpon>202204271748218_AddAreaAndUpdateSignals.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\CustomStuffForExistingUpgrade.txt" />
     <EmbeddedResource Include="Migrations\FillDetectorTypeMetricTypesTable.SQL" />

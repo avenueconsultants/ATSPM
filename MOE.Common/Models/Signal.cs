@@ -106,6 +106,13 @@ namespace MOE.Common.Models
         public virtual Region Region { get; set; }
 
         [Required]
+        [Display(Name = "Area")]
+        [DataMember]
+        public int AreaId { get; set; }
+
+        public virtual ICollection<Area> Area { get; set; }
+
+        [Required]
         [Display(Name = "ControllerType Type")]
         [DataMember]
         public int ControllerTypeID { get; set; }
