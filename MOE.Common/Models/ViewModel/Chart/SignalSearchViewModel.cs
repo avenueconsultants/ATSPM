@@ -12,14 +12,17 @@ namespace MOE.Common.Models.ViewModel.Chart
         private readonly IMetricTypeRepository _metricRepository;
 
         private readonly IRegionsRepository _regionRepository;
+        private readonly IAreaRepository _areaRepository;
         private readonly IJurisdictionRepository _jurisdictionsRepository;
 
         public SignalSearchViewModel()
         {
             _regionRepository = RegionsRepositoryFactory.Create();
             _metricRepository = MetricTypeRepositoryFactory.Create();
+            _areaRepository = AreaRepositoryFactory.Create();
             _jurisdictionsRepository = JurisdictionRepositoryFactory.Create();
             GetRegions(_regionRepository);
+            GetAreas(_areaRepository);
             GetMetrics(_metricRepository);
             GetJurisdictions(_jurisdictionsRepository);
         }
@@ -29,9 +32,11 @@ namespace MOE.Common.Models.ViewModel.Chart
             JurisdictionList = jurisdictionsRepository.GetAllJurisdictions();
         }
 
+        public SignalSearchViewModel(IAreaRepository areaRepository, IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository)
         public SignalSearchViewModel(IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository, IJurisdictionRepository jurisdictionRepository)
         {
             GetRegions(regionRepositry);
+            GetAreas(areaRepository);
             GetMetrics(metricRepository);
             GetJurisdictions(jurisdictionRepository);
         }
@@ -43,6 +48,8 @@ namespace MOE.Common.Models.ViewModel.Chart
 
         public List<Region> Regions { get; set; }
         public int? SelectedRegionID { get; set; }
+        public List<Area> Areas { get; set; }
+        public int? SelectedAreaID { get; set; }
         public int? SelectedJurisdictionId { get; set; }
 
         public List<SelectListItem> MapMetricsList { get; set; }
@@ -62,6 +69,11 @@ namespace MOE.Common.Models.ViewModel.Chart
         public void GetRegions(IRegionsRepository regionRepository)
         {
             Regions = regionRepository.GetAllRegions();
+        }
+
+        public void GetAreas(IAreaRepository areaRepository)
+        {
+            Areas = areaRepository.GetAllAreas();
         }
     }
 }

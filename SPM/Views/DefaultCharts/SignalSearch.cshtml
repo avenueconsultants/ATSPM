@@ -36,11 +36,22 @@
                 <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-md-12">
+                                <label class="control-label" for="Regions" id="Regions-error">Area</label>
+                                @Html.DropDownListFor(model => model.SelectedAreaID,
+                                         new SelectList(Model.Areas, "ID", "AreaName"),
+                                         "--Select Area--", new { @id = "Areas", @class = "form-control", @onchange = "AreasChange(this)" })
+                                @Html.ValidationMessageFor(model => model.SelectedRegionID, "", new { id = "SelectedRegionID-error", @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
                             <div class="col-md-4">
                                 <label class="control-label" for="Regions" id="Regions-error">Region</label>
                                 @Html.DropDownListFor(model => model.SelectedRegionID,
-                                    new SelectList(Model.Regions, "ID", "Description"),
-                                    "--Select Region--", new {@id = "Regions", @class = "form-control", @onchange = "RegionChange(this)"})
+                                         new SelectList(Model.Regions, "ID", "Description"),
+                                         "--Select Region--", new { @id = "Regions", @class = "form-control", @onchange = "RegionChange(this)" })
                                 @Html.ValidationMessageFor(model => model.SelectedRegionID, "", new { id = "SelectedRegionID-error", @class = "text-danger" })
                             </div>
                             <div class="col-md-4">
@@ -61,7 +72,7 @@
                                 <div id="mapDiv" class="MapDiv"></div>
                             </div>
                         </div>
-                        </div>
+                    </div>
                     </div>
             </div>
         </div>

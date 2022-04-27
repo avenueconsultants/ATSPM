@@ -91,6 +91,13 @@
                     </div>
                 </div>
                 <div class="form-group-configuration-tool  form-group col-md-2">
+                    @Html.LabelFor(model => model.AreaID, htmlAttributes: new { @class = "control-label" })
+                    <div class="">
+                        @Html.DropDownListFor(model => model.AreaID, (SelectList)ViewBag.Area, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AreaID, "", new { id = "Area-error", @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group-configuration-tool  form-group col-md-2">
                     @Html.LabelFor(model => model.JurisdictionId, htmlAttributes: new { @class = "control-label" })
                     <div class="">
                         @Html.DropDownListFor(model => model.JurisdictionId, (SelectList)ViewBag.Jurisdictions, new { @class = "form-control" })
