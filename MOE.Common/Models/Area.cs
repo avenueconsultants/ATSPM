@@ -14,7 +14,7 @@ namespace MOE.Common.Models
         public int Id { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Agency Name")]
+        [Display(Name = "Area Name")]
         public string AreaName { get; set; }
 
         [Display(Name = "Signal")]
