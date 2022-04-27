@@ -10,9 +10,9 @@ namespace MOE.Common.Models.ViewModel.WebConfigTool
             SignalSearch = new SignalSearchViewModel();
         }
 
-        public WebConfigToolViewModel(IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository)
+        public WebConfigToolViewModel(IAreaRepository areaRepository, IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository)
         {
-            SignalSearch = new SignalSearchViewModel(regionRepositry, metricRepository);
+            SignalSearch = new SignalSearchViewModel(areaRepository, regionRepositry, metricRepository);
         }
 
         public SignalSearchViewModel SignalSearch { get; set; }

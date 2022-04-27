@@ -11,18 +11,22 @@ namespace MOE.Common.Models.ViewModel.Chart
         private readonly IMetricTypeRepository _metricRepository;
 
         private readonly IRegionsRepository _regionRepository;
+        private readonly IAreaRepository _areaRepository;
 
         public SignalSearchViewModel()
         {
             _regionRepository = RegionsRepositoryFactory.Create();
             _metricRepository = MetricTypeRepositoryFactory.Create();
+            _areaRepository = AreaRepositoryFactory.Create();
             GetRegions(_regionRepository);
+            GetAreas(_areaRepository);
             GetMetrics(_metricRepository);
         }
 
-        public SignalSearchViewModel(IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository)
+        public SignalSearchViewModel(IAreaRepository areaRepository, IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository)
         {
             GetRegions(regionRepositry);
+            GetAreas(areaRepository);
             GetMetrics(metricRepository);
         }
 
@@ -33,6 +37,8 @@ namespace MOE.Common.Models.ViewModel.Chart
 
         public List<Region> Regions { get; set; }
         public int? SelectedRegionID { get; set; }
+        public List<Area> Areas { get; set; }
+        public int? SelectedAreaID { get; set; }
 
         public List<SelectListItem> MapMetricsList { get; set; }
         public List<string> ImageLocation { get; set; }
@@ -50,6 +56,11 @@ namespace MOE.Common.Models.ViewModel.Chart
         public void GetRegions(IRegionsRepository regionRepository)
         {
             Regions = regionRepository.GetAllRegions();
+        }
+
+        public void GetAreas(IAreaRepository areaRepository)
+        {
+            Areas = areaRepository.GetAllAreas();
         }
     }
 }
