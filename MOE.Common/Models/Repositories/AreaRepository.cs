@@ -12,19 +12,19 @@ namespace MOE.Common.Models.Repositories
 
         public List<Area> GetAllAreas()
         {
-            var Areas = (from r in db.Areas
+            var areas = (from r in db.Areas
                          orderby r.AreaName
                          select r).ToList();
-            return Areas;
+            return areas;
         }
 
         public Area GetAreaByID(int areaId)
         {
-            var Area = (from r in db.Areas
+            var area = (from r in db.Areas
                         where r.Id == areaId
                         select r).FirstOrDefault();
-            if (Area != null)
-                return Area;
+            if (area != null)
+                return area;
             {
                 var repository =
                     ApplicationEventRepositoryFactory.Create();
@@ -44,19 +44,19 @@ namespace MOE.Common.Models.Repositories
 
         public Area GetAreaByName(string AreaName)
         {
-            var Area = (from r in db.Areas
+            var area = (from r in db.Areas
                         where r.AreaName == AreaName
                         select r).FirstOrDefault();
-            return Area;
+            return area;
         }
 
         public void DeleteByID(int areaId)
         {
-            var Area = (from r in db.Areas
+            var area = (from r in db.Areas
                         where r.Id == areaId
                         select r).FirstOrDefault();
 
-            db.Areas.Remove(Area);
+            db.Areas.Remove(area);
             db.SaveChanges();
         }
 
@@ -93,10 +93,10 @@ namespace MOE.Common.Models.Repositories
 
         public void Update(Area newArea)
         {
-            var Area = GetAreaByID(newArea.Id);
-            if (Area != null)
+            var area = GetAreaByID(newArea.Id);
+            if (area != null)
             {
-                db.Entry(Area).CurrentValues.SetValues(newArea);
+                db.Entry(area).CurrentValues.SetValues(newArea);
                 db.SaveChanges();
             }
             else
