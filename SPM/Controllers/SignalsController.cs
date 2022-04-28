@@ -79,8 +79,7 @@ namespace SPM.Controllers
         public ActionResult Index()
         {
             MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel wctv =
-                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_areaRepository, _regionRepository, _metricTypeRepository);
-                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_regionRepository, _metricTypeRepository, _jurisdictionRepository);
+                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_regionRepository, _metricTypeRepository, _jurisdictionRepository, _areaRepository);
 
             return View(wctv);
         }
@@ -90,8 +89,7 @@ namespace SPM.Controllers
         public ActionResult SignalDetail()
         {
             MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel wctv =
-                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_areaRepository, _regionRepository, _metricTypeRepository);
-                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_regionRepository, _metricTypeRepository, _jurisdictionRepository);
+                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_regionRepository, _metricTypeRepository, _jurisdictionRepository, _areaRepository);
             return View(wctv);
         }
 
@@ -301,6 +299,7 @@ namespace SPM.Controllers
             signal.VersionList = new List<Signal>();
             signal.VersionActionId = 1;
             signal.JurisdictionId = 1;
+            signal.AreaID = 1;
             return signal;
         }
                 
@@ -644,8 +643,7 @@ namespace SPM.Controllers
 
 
             MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel wctv =
-                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_areaRepository, _regionRepository, _metricTypeRepository);
-                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_regionRepository, _metricTypeRepository, _jurisdictionRepository);
+                new MOE.Common.Models.ViewModel.WebConfigTool.WebConfigToolViewModel(_regionRepository, _metricTypeRepository, _jurisdictionRepository, _areaRepository);
 
             return null;//View(wctv);
         }

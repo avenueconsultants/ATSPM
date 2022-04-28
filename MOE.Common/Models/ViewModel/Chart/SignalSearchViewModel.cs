@@ -27,33 +27,24 @@ namespace MOE.Common.Models.ViewModel.Chart
             GetJurisdictions(_jurisdictionsRepository);
         }
 
-        private void GetJurisdictions(IJurisdictionRepository jurisdictionsRepository)
-        {
-            JurisdictionList = jurisdictionsRepository.GetAllJurisdictions();
-        }
-
-        public SignalSearchViewModel(IAreaRepository areaRepository, IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository)
-        public SignalSearchViewModel(IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository, IJurisdictionRepository jurisdictionRepository)
+        public SignalSearchViewModel(IRegionsRepository regionRepositry, IMetricTypeRepository metricRepository, IJurisdictionRepository jurisdictionRepository, IAreaRepository areaRepository)
         {
             GetRegions(regionRepositry);
             GetAreas(areaRepository);
             GetMetrics(metricRepository);
             GetJurisdictions(jurisdictionRepository);
         }
-
         //public List<Models.Signal> Signals { get; set; }       
         [Required]
         [Display(Name = "Signal ID")]
         public string SignalID { get; set; }
-
         public List<Region> Regions { get; set; }
         public int? SelectedRegionID { get; set; }
-        public List<Area> Areas { get; set; }
+        public List<Area> AreasList { get; set; }
         public int? SelectedAreaID { get; set; }
-        public int? SelectedJurisdictionId { get; set; }
-
-        public List<SelectListItem> MapMetricsList { get; set; }
         public List<Jurisdiction> JurisdictionList { get; set; }
+        public int? SelectedJurisdictionId { get; set; }
+        public List<SelectListItem> MapMetricsList { get; set; }
         public List<string> ImageLocation { get; set; }
 
         public void GetMetrics(IMetricTypeRepository metricRepository)
@@ -71,9 +62,14 @@ namespace MOE.Common.Models.ViewModel.Chart
             Regions = regionRepository.GetAllRegions();
         }
 
+        private void GetJurisdictions(IJurisdictionRepository jurisdictionsRepository)
+        {
+            JurisdictionList = jurisdictionsRepository.GetAllJurisdictions();
+        }
+
         public void GetAreas(IAreaRepository areaRepository)
         {
-            Areas = areaRepository.GetAllAreas();
+            AreasList = areaRepository.GetAllAreas();
         }
     }
 }

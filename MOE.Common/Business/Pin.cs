@@ -16,6 +16,8 @@ namespace MOE.Common.Business
 
         protected string agency;
 
+        protected string area;
+
         protected string signalID;
 
 
@@ -44,13 +46,14 @@ namespace MOE.Common.Business
         //    SortedDictionary<int, bool> reports = FindReports(hasPCD,hasSpeed, hasPhase, hasTMC, hasRLM, hasSplitFail);
         //    box = new InfoBox(signalId, description, reports);
         //}
-        public Pin(string signalId, string lat, string Long, string desc, string Region, string agency)
+        public Pin(string signalId, string lat, string Long, string desc, string Region, string agency, string area)
         {
             signalID = signalId;
             latitude = lat;
             longitude = Long;
             description = desc;
             region = Region;
+            this.area = area;
             this.agency = agency;
 
 
@@ -60,6 +63,7 @@ namespace MOE.Common.Business
         public string SignalID => signalID;
 
         public string Region => region;
+        public string Area => area;
 
         public string Agency => agency;
 

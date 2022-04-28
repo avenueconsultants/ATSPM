@@ -32,7 +32,8 @@ namespace MOE.Common.Business.ScriptGenerator
                         signal.Longitude,
                         signal.PrimaryName + " " + signal.SecondaryName, 
                         signal.RegionID.ToString(), 
-                        signal.Jurisdiction.Id.ToString());
+                        signal.Jurisdiction.Id.ToString(),
+                        signal.AreaID.ToString());
                     pin.MetricTypes = signal.GetMetricTypesString();
                     pins.Add(pin);
                     //Console.WriteLine(pin.SignalID);
@@ -75,11 +76,14 @@ namespace MOE.Common.Business.ScriptGenerator
             var iconURL = './images/orangePin.png';
             var regionDdl = $('#Regions')[0];
             var agencyDdl = $('#Agencies')[0];
+            var areaDdl = $('#Areas')[0];
             var pins = [];
             var regionFilter = -1; if (regionDdl.options[regionDdl.selectedIndex].value != '') 
                 {regionFilter = regionDdl.options[regionDdl.selectedIndex].value;}
             var agencyFilter = -1; if (agencyDdl.options[agencyDdl.selectedIndex].value != '') 
                 {agencyFilter = agencyDdl.options[agencyDdl.selectedIndex].value;}
+            var areaFilter = -1; if (areaDdl.options[areaDdl.selectedIndex].value != '') 
+                {areaFilter = areaDdl.options[areaDdl.selectedIndex].value;}
             var reportType = $('#MetricTypes')[0]; 
             var reportTypeFilter = -1; if (reportType.options[reportType.selectedIndex].value != '')
                 { reportTypeFilter = ','+reportType.options[reportType.selectedIndex].value;}";
@@ -96,7 +100,7 @@ namespace MOE.Common.Business.ScriptGenerator
 
                     //The script string is appended for every pin in the collection.
                     script +=
-                        " if(PinFilterCheck(regionFilter, reportTypeFilter, agencyFilter,"+ pin.Region +"," + pin.Agency + ",'" + pin.MetricTypes +"')) " +
+                        " if(PinFilterCheck(regionFilter, reportTypeFilter, agencyFilter, areaFilter," + pin.Region + "," + pin.Agency + "," + pin.Area + ",'" + pin.MetricTypes +"')) " +
                         "{var " + PinName + " = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(" +
                         pin.Latitude + ", " + pin.Longitude +
                         "));" + PinName +
@@ -132,22 +136,25 @@ return pins;}";
             var pins = GetPinInfo();
             foreach (var pin in pins)
             {
-                var PinName = "pin" + pin.SignalID;
-                //The script string is appended for every pin in the collection.
-                script +=
-                    " if((regionFilter == 0 && reportTypeFilter == 0) || (reportTypeFilter == 0 && regionFilter == " +
-                    pin.Region + ") || (regionFilter == 0 && '" + pin.MetricTypes +
-                    "'.indexOf(reportTypeFilter) > -1) || ('" + pin.MetricTypes +
-                    "'.indexOf(reportTypeFilter) > -1 && regionFilter == " + pin.Region + ") ){var " + PinName +
-                    " = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(" +
-                    pin.Latitude + ", " + pin.Longitude +
-                    "));" +
-                    PinName + ".SignalID = '" + pin.SignalID + "';" + PinName + ".Region = '" + pin.Region + "';" +
-                    PinName + ".Actions = '" + pin.MetricTypes + "';Microsoft.Maps.Events.addHandler(" + PinName +
-                    ", 'mouseup', ZoomIn);Microsoft.Maps.Events.addHandler(" + PinName +
-                    ", 'mouseover', displayRouteInfobox);Microsoft.Maps.Events.addHandler(" + PinName +
-                    ", 'mouseout', closeInfobox);Microsoft.Maps.Events.addHandler(" + PinName +
-                    ", 'click', AddSignalFromPin);pins.push(" + PinName + ");}";
+                if (pin != null)
+                {
+                    var PinName = "pin" + pin.SignalID;
+                    //The script string is appended for every pin in the collection.
+                    script +=
+                        " if((regionFilter == 0 && reportTypeFilter == 0) || (reportTypeFilter == 0 && regionFilter == " +
+                        pin.Region + ") || (regionFilter == 0 && '" + pin.MetricTypes +
+                        "'.indexOf(reportTypeFilter) > -1) || ('" + pin.MetricTypes +
+                        "'.indexOf(reportTypeFilter) > -1 && regionFilter == " + pin.Region + ") ){var " + PinName +
+                        " = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(" +
+                        pin.Latitude + ", " + pin.Longitude +
+                        "));" +
+                        PinName + ".SignalID = '" + pin.SignalID + "';" + PinName + ".Region = '" + pin.Region + "';" +
+                        PinName + ".Actions = '" + pin.MetricTypes + "';Microsoft.Maps.Events.addHandler(" + PinName +
+                        ", 'mouseup', ZoomIn);Microsoft.Maps.Events.addHandler(" + PinName +
+                        ", 'mouseover', displayRouteInfobox);Microsoft.Maps.Events.addHandler(" + PinName +
+                        ", 'mouseout', closeInfobox);Microsoft.Maps.Events.addHandler(" + PinName +
+                        ", 'click', AddSignalFromPin);pins.push(" + PinName + ");}";
+                }
             }
 
             //The Locaitons string will be used ot create a literal that is inserted into the default.html

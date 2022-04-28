@@ -117,8 +117,9 @@ namespace MOE.Common.Models
         [Required]
         [Display(Name = "Area")]
         [DataMember]
-        public int AreaId { get; set; }
+        public int AreaID { get; set; }
 
+        [DataMember]
         public virtual ICollection<Area> Area { get; set; }
 
         [Required]
