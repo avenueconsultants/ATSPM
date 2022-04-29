@@ -225,7 +225,7 @@ function ZoomIn(e) {
         centerpixel.y = centerpixel.y - pixelOffset;
         var newLocation = map.tryPixelToLocation(centerpixel)
         map.setView({
-            zoom: 13,
+            //zoom: 13,
             center: newLocation
         });
     }
