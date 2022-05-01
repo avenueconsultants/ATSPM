@@ -9,23 +9,30 @@ namespace ATSPM.Application.Reports.Business.LeftTurnGapReport
 {
     public class LeftTurnPedestrianAnalysis
     {
-
+        private readonly ISignalsRepository _signalRepository;
         private readonly IApproachRepository _approachRepository;
-        private readonly IDetectorRepository _detectorRepository;
         private readonly IPhasePedAggregationRepository _phasePedAggregationRepository; 
         private readonly IApproachCycleAggregationRepository _approachCycleAggregationRepository;
 
-        public LeftTurnPedestrianAnalysis(IApproachRepository approachRepository, IDetectorRepository detectorRepository, IPhasePedAggregationRepository phasePedAggregationRepository, IApproachCycleAggregationRepository approachCycleAggregationRepository)
+        public LeftTurnPedestrianAnalysis(ISignalsRepository signalRepository, IApproachRepository approachRepository, IPhasePedAggregationRepository phasePedAggregationRepository, IApproachCycleAggregationRepository approachCycleAggregationRepository)
         {
+            _signalRepository = signalRepository;
             _approachRepository = approachRepository;
-            _detectorRepository = detectorRepository;
             _phasePedAggregationRepository = phasePedAggregationRepository;
             _approachCycleAggregationRepository = approachCycleAggregationRepository;
         }
-        public PedActuationResult GetPedestrianPercentage(string signalId, int approachId, DateTime start, DateTime end, TimeSpan startTime, TimeSpan endTime, int[] daysOfWeek)
+        public PedActuationResult GetPedestrianPercentage(
+            string signalId,
+            int approachId,
+            DateTime start,
+            DateTime end,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            int[] daysOfWeek)
         {
+            var signal = _signalRepository.GetVersionOfSignalByDate(signalId, start);
+            var approach = signal.Approaches.Where(a => a.ApproachId == approachId).FirstOrDefault();
             var detectors = LeftTurnReportPreCheck.GetLeftTurnDetectors(approachId, _approachRepository);
-            var approach = _approachRepository.GetApproachByApproachID(detectors.First().ApproachId);
             int opposingPhase = LeftTurnReportPreCheck.GetOpposingPhase(approach);
             var cycleAverage = GetCycleAverage(signalId, start, end, startTime, endTime, opposingPhase, daysOfWeek);
             var pedCycleAverage = GetPedCycleAverage(signalId, start, end, startTime, endTime, opposingPhase, daysOfWeek);
@@ -46,32 +53,46 @@ namespace ATSPM.Application.Reports.Business.LeftTurnGapReport
                 result.PedActuationPercent = pedCycleAverage.PedCycleAverage / cycleAverage.CycleAverage;
             result.CyclesWithPedCalls = Convert.ToInt32(Math.Round(pedCycleAverage.PedCycleAverage));
             result.PercentCyclesWithPedsList = cycleList;
+            result.Direction = approach.DirectionType.Abbreviation + approach.Detectors.FirstOrDefault()?.MovementType.Abbreviation;
+            result.OpposingDirection = signal.Approaches.Where(a => a.ProtectedPhaseNumber == opposingPhase).FirstOrDefault()?.DirectionType.Abbreviation;
 
             return result;
         }
 
-        private PedCycleAverageResult GetPedCycleAverage(string signalId, DateTime start, DateTime end, TimeSpan startTime, TimeSpan endTime, int phase, int[] daysOfWeek)
+        private PedCycleAverageResult GetPedCycleAverage(
+            string signalId,
+            DateTime start,
+            DateTime end,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            int phase,
+            int[] daysOfWeek)
         {
             List<Models.PhasePedAggregation> cycleAggregations = new List<Models.PhasePedAggregation>();
+            List<double> hourlyPedCycles = new List<double>();
             for (var tempDate = start.Date; tempDate <= end; tempDate = tempDate.AddDays(1))
             {
                 if (daysOfWeek.Contains((int)start.DayOfWeek))
-                    cycleAggregations.AddRange(_phasePedAggregationRepository.GetPhasePedsAggregationBySignalIdPhaseNumberAndDateRange(signalId, phase, tempDate.Date.Add(startTime), tempDate.Date.Add(endTime)));
+                {
+                    var pedAgg = _phasePedAggregationRepository.GetPhasePedsAggregationBySignalIdPhaseNumberAndDateRange(signalId, phase, tempDate.Date.Add(startTime), tempDate.Date.Add(endTime));
+                    hourlyPedCycles.Add(pedAgg.Sum(p => p.PedCycles));
+                    cycleAggregations.AddRange(pedAgg);
+                }
             }
             double averagePedCycles = 0;
             if(cycleAggregations.Any())
             {
-                averagePedCycles = cycleAggregations.Average(a => a.PedCycles);
+                averagePedCycles = hourlyPedCycles.Average(a => a);
             }
             Dictionary<DateTime, double> cycleList = new Dictionary<DateTime, double>();
             for (var tempDate = start.Date; tempDate <= end; tempDate = tempDate.AddDays(1))
             {
                 if (daysOfWeek.Contains((int)start.DayOfWeek))
-                    for (var tempstart = tempDate.Date.Add(startTime); tempstart <= tempDate.Add(endTime); tempstart = tempstart.AddMinutes(30))
+                    for (var tempstart = tempDate.Date.Add(startTime); tempstart <= tempDate.Add(endTime); tempstart = tempstart.AddMinutes(15))
                     {
-                        if (cycleAggregations.Where(c => c.BinStartTime >= tempstart && c.BinStartTime < tempstart.AddMinutes(30)).Any())
+                        if (cycleAggregations.Where(c => c.BinStartTime >= tempstart && c.BinStartTime < tempstart.AddMinutes(15)).Any())
                         {
-                            cycleList.Add(tempstart, cycleAggregations.Where(c => c.BinStartTime >= tempstart && c.BinStartTime < tempstart.AddMinutes(30)).Average(c => c.PedCycles));
+                            cycleList.Add(tempstart, cycleAggregations.Where(c => c.BinStartTime >= tempstart && c.BinStartTime < tempstart.AddMinutes(15)).Average(c => c.PedCycles));
                         }
                         else
                         {
@@ -79,33 +100,62 @@ namespace ATSPM.Application.Reports.Business.LeftTurnGapReport
                         }
                     }
             }
-            var pedCycleAverageResult = new PedCycleAverageResult();
-            pedCycleAverageResult.PedCycleAverageList = cycleList;
-            pedCycleAverageResult.PedCycleAverage = averagePedCycles;
+            var pedCycleAverageResult = new PedCycleAverageResult
+            {
+                PedCycleAverageList = cycleList,
+                PedCycleAverage = averagePedCycles
+            };
             return pedCycleAverageResult;
         }
 
-        private CycleAverageResult GetCycleAverage(string signalId, DateTime start, DateTime end, TimeSpan startTime, TimeSpan endTime, int phase, int[] daysOfWeek)
+        private CycleAverageResult GetCycleAverage(
+            string signalId,
+            DateTime start,
+            DateTime end,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            int phase,
+            int[] daysOfWeek)
         {
             List<Models.PhaseCycleAggregation> cycleAggregations = new List<Models.PhaseCycleAggregation>();
+            List<double> hourlyCycles = new List<double>();
             for (var tempDate = start.Date; tempDate <= end; tempDate = tempDate.AddDays(1))
             {
                 if (daysOfWeek.Contains((int)start.DayOfWeek))
-                    cycleAggregations.AddRange(_approachCycleAggregationRepository.GetApproachCyclesAggregationBySignalIdPhaseAndDateRange(signalId, phase, tempDate.Date.Add(startTime), tempDate.Date.Add(endTime)));
+                {
+                    var cyclesAgg = _approachCycleAggregationRepository.GetApproachCyclesAggregationBySignalIdPhaseAndDateRange(signalId, phase, tempDate.Date.Add(startTime), tempDate.Date.Add(endTime));
+                    hourlyCycles.Add(cyclesAgg.Sum(c => c.TotalRedToRedCycles));
+                    cycleAggregations.AddRange(cyclesAgg);
+                }
             }
-            Dictionary<DateTime, double> cycleList = new Dictionary<DateTime, double>();
-            for (var tempDate = start.Date; tempDate <= end; tempDate = tempDate.AddDays(1))
+            Dictionary<DateTime, double> cycleList = GetAverageCycles(start, end, startTime, endTime, daysOfWeek, cycleAggregations);
+            var cycleAverage = new CycleAverageResult
             {
-                if (daysOfWeek.Contains((int)start.DayOfWeek)) 
-                    for (var tempstart = tempDate.Date.Add(startTime); tempstart <= tempDate.Add(endTime); tempstart = tempstart.AddMinutes(30))
+                CycleAverage = hourlyCycles.Average(a => a),
+                CycleAverageList = cycleList
+            };
+            return cycleAverage;
+        }
+
+        public static Dictionary<DateTime, double> GetAverageCycles(
+            DateTime start,
+            DateTime end,
+            TimeSpan startTime,
+            TimeSpan endTime,
+            int[] daysOfWeek,
+            List<Models.PhaseCycleAggregation> cycleAggregations)
+        {
+            Dictionary<DateTime, double> cycleList = new Dictionary<DateTime, double>();
+            for (var tempDate = start.Date; tempDate < end; tempDate = tempDate.AddDays(1))
+            {
+                if (daysOfWeek.Contains((int)start.DayOfWeek))
+                    for (var tempstart = tempDate.Date.Add(startTime); tempstart < tempDate.Add(endTime); tempstart = tempstart.AddMinutes(15))
                     {
-                        cycleList.Add(tempstart, cycleAggregations.Where(c => c.BinStartTime >= tempstart && c.BinStartTime < tempstart.AddMinutes(30)).Average(c => c.TotalRedToRedCycles));
+                        cycleList.Add(tempstart, cycleAggregations.Where(c => c.BinStartTime >= tempstart && c.BinStartTime < tempstart.AddMinutes(15)).Average(c => c.TotalRedToRedCycles));
                     }
             }
-            var cycleAverage = new CycleAverageResult();
-            cycleAverage.CycleAverage = cycleAggregations.Average(a => a.TotalRedToRedCycles);
-            cycleAverage.CycleAverageList = cycleList;
-            return cycleAverage;
+
+            return cycleList;
         }
     }
 

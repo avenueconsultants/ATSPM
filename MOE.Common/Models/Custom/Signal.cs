@@ -259,6 +259,7 @@ namespace MOE.Common.Models
             newSignal.Enabled = origSignal.Enabled;
             newSignal.Pedsare1to1 = origSignal.Pedsare1to1;
             newSignal.Approaches = new List<Approach>();
+            newSignal.JurisdictionId = origSignal.JurisdictionId;
 
             if (origSignal.Approaches != null)
                 foreach (var a in origSignal.Approaches)

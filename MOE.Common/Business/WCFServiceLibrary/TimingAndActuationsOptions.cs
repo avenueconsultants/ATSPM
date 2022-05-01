@@ -123,6 +123,11 @@ namespace MOE.Common.Business.WCFServiceLibrary
         [Required]
         [DataMember]
         public bool ShowRawEventData { get; set; }
+
+        [Display(Name = "Show Permissive Phases")]
+        [Required]
+        [DataMember]
+        public bool ShowPermissivePhases { get; set; }
         
         public List<int> GlobalEventCodesList { get; set; }
         public List<int> GlobalEventParamsList { get; set; }
@@ -146,32 +151,6 @@ namespace MOE.Common.Business.WCFServiceLibrary
             MetricTypeID = 17;
             //ExtendSearch = 0;
             SetDefaults();
-        }
-
-        public void SetDefaults()
-        {
-            ShowLegend = false;
-            CombineLanesForEachGroup = false;
-            ShowAdvancedCount = true;
-            ShowAdvancedDilemmaZone = true;
-            ShowAllLanesInfo = true;
-
-            ShowEventPairs = false;
-            ShowHeaderForEachPhase = false;
-            ShowLaneByLaneCount = true;
-            ShowLinesStartEnd = true;
-
-            ShowPedestrianActuation = true;
-            ShowPedestrianIntervals = true;
-            ShowStopBarPresence = true;
-            ShowRawEventData = false;
-            ShowVehicleSignalDisplay = true;
-
-            DotAndBarSize = 6;
-            AdvancedOffset = 0.0;
-            ExtendStartStopSearch = 2.0;
-
-            ExtendVsdSearch = 5.0;
         }
 
         public override List<string> CreateMetric()
@@ -245,7 +224,11 @@ namespace MOE.Common.Business.WCFServiceLibrary
             //Parallel.ForEach(timingAndActuationsForPhases, timingAndActutionsForPhase =>
                 foreach (var timingAndActutionsForPhase in timingAndActuationsForPhases)
             {
-                GetChart(timingAndActutionsForPhase);
+                if (timingAndActutionsForPhase.GetPermissivePhase==false ||
+                    ShowPermissivePhases)
+                {
+                    GetChart(timingAndActutionsForPhase);
+                }
            // });
             }
 

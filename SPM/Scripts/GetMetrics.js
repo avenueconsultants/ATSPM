@@ -153,6 +153,7 @@ function GetTimingAndActuationsMetric(metricTypeID) {
     tosend.ShowLinesStartEnd = $("#ShowLinesStartEnd").is(":checked");
     tosend.ShowEventPairs = $("#ShowEventPairs").is(":checked");
     tosend.ShowRawEventData = $("#ShowRawEventData").is(":checked");
+    tosend.ShowPermissivePhases = $("#ShowPermissivePhases").is(":checked");
     tosend.ExtendVsdSearch = $("#ExtendVsdSearch").val();
     tosend.ShowVehicleSignalDisplay = $("#ShowVehicleSignalDisplay").is(":checked");
     tosend.ShowPedestrianIntervals = $("#ShowPedestrianIntervals").is(":checked");
@@ -245,6 +246,13 @@ function GetLeftTurnGapAnalysisMetric(metricTypeID) {
     GetMetric(urlpathLeftTurnGapAnalysis, toSend);
 }
 
+function GetWaitTimeMetric(metricTypeID) {
+    var toSend = GetCommonValues();
+    toSend.MetricTypeID = metricTypeID;
+    toSend.ShowPlanStripes = $("#ShowPlanStripes").is(":checked");
+    GetMetric(urlpathWaitTime, toSend);
+}
+
 $('#CreateMetric').click(function() { CreateMetric(); });
 
 function CreateMetric() {
@@ -291,6 +299,9 @@ function CreateMetric() {
         }
         else if (selectedMetricID === "31") {
             GetLeftTurnGapAnalysisMetric(31);
+        }
+        else if (selectedMetricID === "32") {
+            GetWaitTimeMetric(32);
         }
         else if (selectedMetricID === "17") {
             GetTimingAndActuationsMetric(17);

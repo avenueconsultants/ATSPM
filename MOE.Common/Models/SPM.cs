@@ -52,6 +52,7 @@ namespace MOE.Common.Models
         public virtual DbSet<ActionLog> ActionLogs { get; set; }
         public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<RouteSignal> RouteSignals { get; set; }
+        public virtual DbSet<Jurisdiction> Jurisdictions { get; set; }
         public virtual DbSet<RoutePhaseDirection> RoutePhaseDirections { get; set; }
         public virtual DbSet<ControllerType> ControllerType { get; set; }
         public virtual DbSet<Speed_Events> Speed_Events { get; set; }
@@ -91,6 +92,7 @@ namespace MOE.Common.Models
         public virtual DbSet<PhaseSplitMonitorAggregation> PhaseSplitMonitorAggregationsAggregations { get; set; }
         public virtual DbSet<PhaseLeftTurnGapAggregation> PhaseLeftTurnGapAggregations { get; set; }
         public virtual DbSet<SignalToAggregate> SignalsToAggregate { get; set; }
+        public virtual DbSet<MeasuresDefaults> MeasuresDefaults { get; set; }
 
         public static SPM Create()
         {
@@ -126,6 +128,12 @@ namespace MOE.Common.Models
 
             modelBuilder.Entity<Signal>()
                 .Property(e => e.RegionID);
+
+            modelBuilder.Entity<Signal>()
+                .HasRequired(s => s.Jurisdiction)
+                .WithMany(s => s.Signals)
+                .HasForeignKey(u => u.JurisdictionId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Approach>()
                 .HasMany(e => e.Detectors)
