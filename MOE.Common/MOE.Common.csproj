@@ -691,10 +691,6 @@
       <DependentUpon>202204300103177_4_3.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Jurisdiction.cs" />
-    <Compile Include="Migrations\202203042032413_4NewAppPedColumns.cs" />
-    <Compile Include="Migrations\202203042032413_4NewAppPedColumns.designer.cs">
-      <DependentUpon>202203042032413_4NewAppPedColumns.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\ApplicationSettings.cs" />
     <Compile Include="Models\MeasuresDefaults.cs" />
@@ -1165,9 +1161,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204300103177_4_3.resx">
       <DependentUpon>202204300103177_4_3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202203042032413_4NewAppPedColumns.resx">
-      <DependentUpon>202203042032413_4NewAppPedColumns.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\CustomStuffForExistingUpgrade.txt" />
     <EmbeddedResource Include="Migrations\FillDetectorTypeMetricTypesTable.SQL" />
