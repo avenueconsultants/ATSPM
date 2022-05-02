@@ -115,12 +115,9 @@ namespace MOE.Common.Models
         public virtual Jurisdiction Jurisdiction { get; set; }
 
         [Required]
-        [Display(Name = "Area")]
+        [Display(Name = "Areas")]
         [DataMember]
-        public int AreaID { get; set; }
-
-        [DataMember]
-        public virtual ICollection<Area> Area { get; set; }
+        public virtual ICollection<Area> Areas { get; set; }
 
         [Required]
         [Display(Name = "ControllerType Type")]

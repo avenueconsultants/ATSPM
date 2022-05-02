@@ -25,18 +25,19 @@ namespace MOE.Common.Business.ScriptGenerator
         {
             var pins = new List<Pin>();
             List<Signal> signals = GetSignalVersionByDate(DateTime.Now);
-                //foreach (var signal in signals)
-                Parallel.ForEach(signals, signal =>
-                {
-                    var pin = new Pin(signal.SignalID, signal.Latitude,
-                        signal.Longitude,
-                        signal.PrimaryName + " " + signal.SecondaryName, 
-                        signal.RegionID.ToString(), 
-                        signal.Jurisdiction.Id.ToString(),
-                        signal.AreaID.ToString());
-                    pin.MetricTypes = signal.GetMetricTypesString();
-                    pins.Add(pin);
-                    //Console.WriteLine(pin.SignalID);
+            //foreach (var signal in signals)
+            Parallel.ForEach(signals, signal =>
+            {
+                var pin = new Pin(signal.SignalID, signal.Latitude,
+                    signal.Longitude,
+                    signal.PrimaryName + " " + signal.SecondaryName,
+                    signal.RegionID.ToString(),
+                    signal.Jurisdiction.Id.ToString()
+                );
+                pin.MetricTypes = signal.GetMetricTypesString();
+                pin.Areas = signal.GetAreasString();
+                pins.Add(pin);
+                //Console.WriteLine(pin.SignalID);
                 });
             return pins;
         }
@@ -57,6 +58,7 @@ namespace MOE.Common.Business.ScriptGenerator
 
                 var signals = db.Signals.Where(signal => versionIds.Contains(signal.VersionID))
                     .Include(signal => signal.Jurisdiction)
+                    .Include(signal => signal.Areas)
                     .Include(signal => signal.Approaches.Select(a => a.Detectors.Select(d => d.DetectionTypes)))
                     .Include(signal => signal.Approaches.Select(a =>
                         a.Detectors.Select(d => d.DetectionTypes.Select(det => det.MetricTypes))))
@@ -100,7 +102,7 @@ namespace MOE.Common.Business.ScriptGenerator
 
                     //The script string is appended for every pin in the collection.
                     script +=
-                        " if(PinFilterCheck(regionFilter, reportTypeFilter, agencyFilter, areaFilter," + pin.Region + "," + pin.Agency + "," + pin.Area + ",'" + pin.MetricTypes +"')) " +
+                        " if(PinFilterCheck(regionFilter, reportTypeFilter, agencyFilter, areaFilter," + pin.Region + ", " + pin.Agency + ", '" + pin.Areas + "', '" + pin.MetricTypes +"')) " +
                         "{var " + PinName + " = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(" +
                         pin.Latitude + ", " + pin.Longitude +
                         "));" + PinName +

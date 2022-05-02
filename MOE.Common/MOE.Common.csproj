@@ -499,6 +499,10 @@
     <Compile Include="Migrations\202204271748218_AddAreaAndUpdateSignals.designer.cs">
       <DependentUpon>202204271748218_AddAreaAndUpdateSignals.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205021858538_RemoveAreaIdFromSignals.cs" />
+    <Compile Include="Migrations\202205021858538_RemoveAreaIdFromSignals.designer.cs">
+      <DependentUpon>202205021858538_RemoveAreaIdFromSignals.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Area.cs" />
     <Compile Include="Data\MOE.cs">
       <DependentUpon>MOE.xsd</DependentUpon>
@@ -1173,6 +1177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204091703032_SignalJurisdiction.resx">
       <DependentUpon>202204091703032_SignalJurisdiction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205021858538_RemoveAreaIdFromSignals.resx">
+      <DependentUpon>202205021858538_RemoveAreaIdFromSignals.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\CustomStuffForExistingUpgrade.txt" />
     <EmbeddedResource Include="Migrations\FillDetectorTypeMetricTypesTable.SQL" />

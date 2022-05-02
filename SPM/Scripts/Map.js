@@ -307,10 +307,10 @@ function EndRequest(sender, args) {
 //        );
 //}
 
-function PinFilterCheck(regionFilter, reportTypeFilter, agencyFilter, areaFilter, pinRegion, pinAgency, pinArea, pinMetricTypes) {
+function PinFilterCheck(regionFilter, reportTypeFilter, agencyFilter, areaFilter, pinRegion, pinAgency, areas, pinMetricTypes) {
     if (regionFilter != -1 && regionFilter != pinRegion) return false;
     if (agencyFilter != -1 && agencyFilter != pinAgency) return false;
-    if (areaFilter != -1 && areaFilter != pinArea) return false;
+    if (areaFilter != -1 && areas.indexOf(areaFilter) == -1) return false;
     if (reportTypeFilter != -1 && pinMetricTypes.indexOf(reportTypeFilter) == -1) return false;
     return true;
 }

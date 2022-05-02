@@ -299,7 +299,6 @@ namespace SPM.Controllers
             signal.VersionList = new List<Signal>();
             signal.VersionActionId = 1;
             signal.JurisdictionId = 1;
-            signal.AreaID = 1;
             return signal;
         }
                 
@@ -623,7 +622,7 @@ namespace SPM.Controllers
         {
             ViewBag.ControllerType = new SelectList(_controllerTypeRepository.GetControllerTypes(), "ControllerTypeID", "Description", signal.ControllerTypeID);
             ViewBag.Region = new SelectList(_regionRepository.GetAllRegions(), "ID", "Description", signal.RegionID);
-            ViewBag.Area = new SelectList(_areaRepository.GetAllAreas(), "ID", "AreaName", signal.AreaID);
+            ViewBag.Areas = new MultiSelectList(_areaRepository.GetAllAreas(), "ID", "AreaName", _areaRepository.GetListOfAreasForSignal(signal.SignalID));
             ViewBag.DirectionType = new SelectList(_directionTypeRepository.GetAllDirections(), "DirectionTypeID", "Abbreviation");
             ViewBag.MovementType = new SelectList(_movementTypeRepository.GetAllMovementTypes(), "MovementTypeID", "Description");
             ViewBag.LaneType = new SelectList(_laneTypeRepository.GetAllLaneTypes(), "LaneTypeID", "Description");

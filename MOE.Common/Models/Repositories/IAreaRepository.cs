@@ -11,6 +11,7 @@ namespace MOE.Common.Models.Repositories
         List<Area> GetAllAreas();
         Area GetAreaByID(int areaId);
         Area GetAreaByName(string AreaName);
+        List<Area> GetListOfAreasForSignal(string signalId);
         void DeleteByID(int areaId);
         void Remove(Area Area);
         void Update(Area newArea);

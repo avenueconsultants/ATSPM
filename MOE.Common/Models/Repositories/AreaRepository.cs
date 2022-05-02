@@ -60,6 +60,12 @@ namespace MOE.Common.Models.Repositories
             db.SaveChanges();
         }
 
+        public List<Area> GetListOfAreasForSignal(string signalId)
+        {
+            var areas = (db.Signals.Where(s => s.SignalID == signalId).SelectMany(s => s.Areas)).ToList();
+            return areas;
+        }
+
         public void Remove(Area Area)
         {
             var g = (from r in db.Areas
