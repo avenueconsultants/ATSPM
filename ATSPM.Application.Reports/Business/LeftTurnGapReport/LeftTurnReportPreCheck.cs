@@ -404,13 +404,15 @@ namespace ATSPM.Application.Reports.Business.LeftTurnGapReport
 
             foreach (TimeSpan time in distinctTimeSpans)
             {
-                int average = Convert.ToInt32(
-                    Math.Round(volumeAggregations
+                int average = Convert.ToInt32(volumeAggregations
                     .Where(v => v.BinStartTime.TimeOfDay == time)
-                    .Average(v => v.EventCount)
-                    ));
+                    .GroupBy(v => v.BinStartTime.Day).Select(v => new
+                    {
+                        sum = v.Sum(a => a.EventCount)
+                    }).Average(v => v.sum)
+                );             
                 averageByBin.Add(time, average);
-            }
+            };
 
             return averageByBin;
         }
