@@ -408,6 +408,7 @@ namespace SPM.Controllers
             }
             Signal signal = _signalsRepository.GetLatestVersionOfSignalBySignalID(id);
             signal.Approaches = signal.Approaches.OrderBy(a => a.ProtectedPhaseNumber).ThenBy(a => a.DirectionType.Description).ToList();
+            signal.Areas = signal.Areas.OrderBy(a => a.AreaName).ToList();
 
             if (signal.Approaches == null)
             {
@@ -564,11 +565,17 @@ namespace SPM.Controllers
             {
                 ModelState.Clear();
                 signal = SetDetectionTypes(signal);
-              
+
                 //var modelStateErrors = this.ModelState.Keys.SelectMany(key => this.ModelState[key].Errors);
-                
+
                 if (TryValidateModel(signal))
                 {
+                    //foreach (var id in signal.AreaIds)
+                    //{
+                    //    Area area = (_areaRepository.GetAreaByID(id));
+                    //    signal.Areas.Add(area);
+                    //}
+                    signal.Start = DateTime.Now;
                     MOE.Common.Models.Repositories.ISignalsRepository repository =
                         MOE.Common.Models.Repositories.SignalsRepositoryFactory.Create();
                     repository.AddOrUpdate(signal);
@@ -620,9 +627,18 @@ namespace SPM.Controllers
 
         private void AddSelectListsToViewBag(Signal signal)
         {
+            var ids = new List<int>();
+            if (signal.Areas.Count > 0)
+            {
+                foreach (var a in signal.Areas)
+                {
+                    ids.Add(a.Id);
+                }
+            }
+            ViewBag.AreaIds = ids;
             ViewBag.ControllerType = new SelectList(_controllerTypeRepository.GetControllerTypes(), "ControllerTypeID", "Description", signal.ControllerTypeID);
             ViewBag.Region = new SelectList(_regionRepository.GetAllRegions(), "ID", "Description", signal.RegionID);
-            ViewBag.Areas = new MultiSelectList(_areaRepository.GetAllAreas(), "ID", "AreaName", _areaRepository.GetListOfAreasForSignal(signal.SignalID));
+            ViewBag.Areas = new MultiSelectList(_areaRepository.GetAllAreas(), "Id", "AreaName", _areaRepository.GetListOfAreasForSignal(signal.SignalID));
             ViewBag.DirectionType = new SelectList(_directionTypeRepository.GetAllDirections(), "DirectionTypeID", "Abbreviation");
             ViewBag.MovementType = new SelectList(_movementTypeRepository.GetAllMovementTypes(), "MovementTypeID", "Description");
             ViewBag.LaneType = new SelectList(_laneTypeRepository.GetAllLaneTypes(), "LaneTypeID", "Description");

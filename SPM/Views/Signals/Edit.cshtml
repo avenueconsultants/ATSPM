@@ -4,7 +4,9 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".signal-areas").chosen();
+            $(".signal-areas").chosen({
+                placeholder_text_multiple: "No Areas Selected"
+            });
         });
     </script>
     @Html.AntiForgeryToken()
@@ -26,6 +28,7 @@
                 }
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.SignalID, new { @id = "editSignalID" })
+                @Html.HiddenFor(model => model.Areas)
                 @*@Html.HiddenFor(model => model.VersionID, new {@versionId = "editVersionID"})*@
                 <div class="row">
                     <div class="form-group-configuration-tool  form-group col-md-4">
@@ -99,7 +102,7 @@
                     <div class="form-group-configuration-tool  form-group col-md-2">
                         @Html.LabelFor(model => model.Areas, htmlAttributes: new { @class = "control-label" })
                         <div class="">
-                            @Html.ListBoxFor(model => model.AreaIDs, (MultiSelectList)ViewBag.SignalAreas, new { @class = "form-control signal-areas" })
+                            @Html.ListBoxFor(model => model.AreaIds, (MultiSelectList)ViewBag.Areas, new { @class = "form-control signal-areas" })
                             @Html.ValidationMessageFor(model => model.Areas, "", new { id = "Area-error", @class = "text-danger" })
                         </div>
                     </div>
