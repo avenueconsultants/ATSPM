@@ -570,7 +570,6 @@ namespace SPM.Controllers
 
                 if (TryValidateModel(signal))
                 {
-                    signal.Start = DateTime.Now;
                     MOE.Common.Models.Repositories.ISignalsRepository repository =
                         MOE.Common.Models.Repositories.SignalsRepositoryFactory.Create();
                     repository.AddOrUpdate(signal);
