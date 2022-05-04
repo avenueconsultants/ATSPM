@@ -17,6 +17,7 @@ namespace SPM.Controllers
     public class AreasController : Controller
     {
         MOE.Common.Models.Repositories.IAreaRepository areaRepository = MOE.Common.Models.Repositories.AreaRepositoryFactory.Create();
+        MOE.Common.Models.Repositories.ISignalsRepository signalRepository = MOE.Common.Models.Repositories.SignalsRepositoryFactory.Create();
 
         // GET: Area
         public ActionResult Index()
@@ -57,6 +58,20 @@ namespace SPM.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Area area = areaRepository.GetAreaByID(id.Value);
+            area.Signals = area.Signals.ToList();
+            var ids = new List<int>();
+            if (area.Signals != null && area.Signals.FirstOrDefault() != null)
+            {
+                foreach (var s in area.Signals)
+                {
+                    ids.Add(s.VersionID);
+                }
+            }
+            ViewBag.SignalIds = ids;
+            //ViewBag.Signals = new MultiSelectList(signalRepository.GetAllSignals(), "SignalId", "PrimaryName");
+            ViewBag.Signals = new MultiSelectList(areaRepository.GetAllAreas(), "Id", "AreaName");
+
+
             if (area == null)
             {
                 return HttpNotFound();

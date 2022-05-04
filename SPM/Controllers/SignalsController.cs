@@ -570,11 +570,6 @@ namespace SPM.Controllers
 
                 if (TryValidateModel(signal))
                 {
-                    //foreach (var id in signal.AreaIds)
-                    //{
-                    //    Area area = (_areaRepository.GetAreaByID(id));
-                    //    signal.Areas.Add(area);
-                    //}
                     signal.Start = DateTime.Now;
                     MOE.Common.Models.Repositories.ISignalsRepository repository =
                         MOE.Common.Models.Repositories.SignalsRepositoryFactory.Create();
@@ -628,7 +623,7 @@ namespace SPM.Controllers
         private void AddSelectListsToViewBag(Signal signal)
         {
             var ids = new List<int>();
-            if (signal.Areas.Count > 0)
+            if (signal.Areas != null && signal.Areas.FirstOrDefault() != null)
             {
                 foreach (var a in signal.Areas)
                 {
