@@ -35,8 +35,9 @@ namespace MOE.Common.Business.TimingAndActuations
         public Dictionary<string, List<Controller_Event_Log>> LaneByLanes { get; set; }
         public Dictionary<string, List<Controller_Event_Log>> PhaseCustomEvents { get; set; }
 
-        public TimingAndActuationsForPhase(int phaseNumber, bool phaseOrOverlap, TimingAndActuationsOptions options)
+        public TimingAndActuationsForPhase(Approach approach, int phaseNumber, bool phaseOrOverlap, TimingAndActuationsOptions options)
         {
+            Approach = approach;
             PhaseNumber = phaseNumber;
             Options = options;
             PhaseOrOverlap = phaseOrOverlap;
@@ -74,12 +75,12 @@ namespace MOE.Common.Business.TimingAndActuations
             }
             if (Options.ShowPedestrianActuation && !GetPermissivePhase)
             {
-                GetPedestrianEvents(approach);
+                GetPedestrianEvents();
             }
             if (Options.ShowPedestrianIntervals && !GetPermissivePhase)
             {
                 var getPhaseOrOverlapEvents = !(approach.IsProtectedPhaseOverlap || approach.IsPermissivePhaseOverlap);
-                GetPedestrianIntervals(getPhaseOrOverlapEvents, approach);
+                GetPedestrianIntervals(getPhaseOrOverlapEvents);
             }
             if (Options.ShowLaneByLaneCount)
             {
@@ -477,30 +478,27 @@ namespace MOE.Common.Business.TimingAndActuations
         }
     
 
-        private void GetPedestrianEvents(Approach approach)
+        private void GetPedestrianEvents()
         {
-            int pedPhaseNumber = GetPedestrianPhaseNumber(approach);
+            var pedDetectors = GetPedDetectorsFromApproach();
             var extendStartTime = Options.ExtendVsdSearch * 60.0;
             var controllerEventLogRepository = ControllerEventLogRepositoryFactory.Create();
-            PedestrianEvents = controllerEventLogRepository.GetEventsByEventCodesParam(Options.SignalID,
-                Options.StartDate.AddSeconds(-extendStartTime), Options.EndDate,
-                        new List<int> { 89, 90 }, pedPhaseNumber);
-        }
-
-        private static int GetPedestrianPhaseNumber(Approach approach)
-        {
-            var pedPhaseNumber = approach.ProtectedPhaseNumber;
-            if (approach.PedestrianPhaseNumber.HasValue && approach.PedestrianPhaseNumber != approach.ProtectedPhaseNumber)
+            PedestrianEvents = new List<Controller_Event_Log>();
+            foreach(var pedDetector in pedDetectors)
             {
-                pedPhaseNumber = approach.PedestrianPhaseNumber.Value;
+                PedestrianEvents.AddRange(controllerEventLogRepository.GetEventsByEventCodesParam(Options.SignalID,
+                    Options.StartDate.AddSeconds(-extendStartTime), Options.EndDate,
+                            new List<int> { 89, 90 }, pedDetector));
             }
-
-            return pedPhaseNumber;
         }
 
-        public void GetPedestrianIntervals(bool phaseOrOverlap, Approach approach)
+        public List<int> GetPedDetectorsFromApproach()
         {
-            int pedPhaseNumber = GetPedestrianPhaseNumber(approach);
+            return !String.IsNullOrEmpty(Approach.PedestrianDetectors) ? Approach.PedestrianDetectors.Split(',').Select(Int32.Parse).ToList() : new List<int>() { Approach.ProtectedPhaseNumber };
+        }
+
+        public void GetPedestrianIntervals(bool phaseOrOverlap)
+        {
             var extendStartSearch = Options.ExtendStartStopSearch * 60.0;
             var overlapCodes = new List<int> { 67, 68, 69 };
             if (phaseOrOverlap)
@@ -509,8 +507,8 @@ namespace MOE.Common.Business.TimingAndActuations
             }
             var controllerEventLogRepository = ControllerEventLogRepositoryFactory.Create();
             PedestrianIntervals = controllerEventLogRepository.GetEventsByEventCodesParam(Options.SignalID,
-                Options.StartDate.AddSeconds(- extendStartSearch), Options.EndDate.AddSeconds( extendStartSearch),
-                overlapCodes, pedPhaseNumber);
+                Options.StartDate.AddSeconds(-extendStartSearch), Options.EndDate.AddSeconds(extendStartSearch),
+                overlapCodes, PhaseNumber);
         }
     }
 }
