@@ -296,6 +296,7 @@ namespace SPM.Controllers
             signal.Start = DateTime.Today;          
             signal.Note = "Create New";
             signal.Enabled = true;
+            signal.Pedsare1to1 = true;
             signal.VersionList = new List<Signal>();
             signal.VersionActionId = 1;
             signal.JurisdictionId = 1;
@@ -570,10 +571,20 @@ namespace SPM.Controllers
 
                 if (TryValidateModel(signal))
                 {
-                    MOE.Common.Models.Repositories.ISignalsRepository repository =
+                    MOE.Common.Models.Repositories.ISignalsRepository signalRepository =
                         MOE.Common.Models.Repositories.SignalsRepositoryFactory.Create();
-                    repository.AddOrUpdate(signal);
+                    signalRepository.AddOrUpdate(signal);
                     AddSelectListsToViewBag(signal);
+
+                    foreach (var approach in signal.Approaches)
+                    {
+                        if (TryValidateModel(approach))
+                        {
+                            MOE.Common.Models.Repositories.IApproachRepository approachRepository =
+                                MOE.Common.Models.Repositories.ApproachRepositoryFactory.Create();
+                            approachRepository.AddOrUpdate(approach);
+                        }
+                    }
                     return Content("Save Successful!" + DateTime.Now.ToString());
                 }
                 return Content("There was a validation error.");
