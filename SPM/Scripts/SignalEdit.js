@@ -676,10 +676,6 @@ function onProtectedPhaseNumberInput() {
     }
 }
 
-//$(".protected-phase-value").change(function () {
-//    alert("Handler for .change() called.");
-//});
-
 function CheckboxReadOnly() {
     var pedchecked = document.getElementById('Pedsare1to1-value');
     var pedoverlap = document.getElementsByClassName('ped-overlap-checkbox');
