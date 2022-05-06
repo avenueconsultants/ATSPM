@@ -576,15 +576,6 @@ namespace SPM.Controllers
                     signalRepository.AddOrUpdate(signal);
                     AddSelectListsToViewBag(signal);
 
-                    foreach (var approach in signal.Approaches)
-                    {
-                        if (TryValidateModel(approach))
-                        {
-                            MOE.Common.Models.Repositories.IApproachRepository approachRepository =
-                                MOE.Common.Models.Repositories.ApproachRepositoryFactory.Create();
-                            approachRepository.AddOrUpdate(approach);
-                        }
-                    }
                     return Content("Save Successful!" + DateTime.Now.ToString());
                 }
                 return Content("There was a validation error.");
