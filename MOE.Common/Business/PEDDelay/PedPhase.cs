@@ -58,6 +58,10 @@ namespace MOE.Common.Business.PEDDelay
         public double AverageDelay { get; private set; }
         public double MaxDelay { get; private set; }
         public double TotalDelay { get; set; }
+        public int ImputedPedCallsRegistered { get; set; }
+        public int UniquePedDetections { get; set; }
+        public int PedBeginWalkCount { get; set; }
+        public int PedCallsRegisteredCount { get; set; }
 
         private void AddCyclesToPlans()
         {
