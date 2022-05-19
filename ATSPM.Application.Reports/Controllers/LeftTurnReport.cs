@@ -56,7 +56,7 @@ namespace ATSPM.Application.Reports.Controllers
         {
             var amStartTime = new TimeSpan(6, 0, 0);
             var amEndTime = new TimeSpan(9, 0, 0);
-            var pmStartTime = new TimeSpan(15, 0, 0);
+            var pmStartTime = new TimeSpan(14, 0, 0);
             var pmEndTime = new TimeSpan(18, 0, 0);
 
             var approach = _approachRepository.GetApproachByApproachID(parameters.ApproachId);
