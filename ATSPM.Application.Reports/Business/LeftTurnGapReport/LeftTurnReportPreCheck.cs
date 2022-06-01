@@ -299,7 +299,7 @@ namespace ATSPM.Application.Reports.Business.LeftTurnGapReport
         //}
 
         public static Dictionary<TimeSpan, int> GetAMPMPeakFlowRate(string signalId, int approachId, DateTime startDate, DateTime endDate, TimeSpan amStartTime,
-            TimeSpan amEndTime, TimeSpan pmStartTime, TimeSpan pmEndTime, int[] daysOfWeek, ISignalsRepository signalsRepository, 
+            TimeSpan amEndTime, TimeSpan pmStartTime, TimeSpan pmEndTime, int[] daysOfWeek, ISignalsRepository signalsRepository,
             IApproachRepository approachRepository, IDetectorEventCountAggregationRepository detectorEventCountAggregationRepository)
         {
             if (!signalsRepository.Exists(signalId))
