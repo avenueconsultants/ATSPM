@@ -494,7 +494,7 @@ namespace MOE.Common.Business.TimingAndActuations
 
         public List<int> GetPedDetectorsFromApproach()
         {
-            return !String.IsNullOrEmpty(Approach.PedestrianDetectors) ? Approach.PedestrianDetectors.Split(',').Select(Int32.Parse).ToList() : new List<int>() { Approach.ProtectedPhaseNumber };
+            return !String.IsNullOrEmpty(Approach.PedestrianDetectors) ? Approach.PedestrianDetectors.Split(new Char[] { ',', '-' }).Select(Int32.Parse).ToList() : new List<int>() { Approach.ProtectedPhaseNumber };
         }
 
         public void GetPedestrianIntervals(bool phaseOrOverlap)
