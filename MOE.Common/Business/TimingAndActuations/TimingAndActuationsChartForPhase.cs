@@ -87,7 +87,7 @@ namespace MOE.Common.Business.TimingAndActuations
                 && (!getPermissivePhase
                 || TimingAndActuationsForPhase.Options.ShowRawEventData))
             {
-                SetPedestrianActuation(timingAndActuationsForPhase.PhaseNumber, String.Join(",", TimingAndActuationsForPhase.Approach.GetPedDetectorsFromApproach()));
+                SetPedestrianActuation();
             }
             if (TimingAndActuationsForPhase.Options.ShowPedestrianIntervals
                 && (!getPermissivePhase || TimingAndActuationsForPhase.Options.ShowRawEventData))
@@ -460,9 +460,11 @@ namespace MOE.Common.Business.TimingAndActuations
             _yValue += 1.0;
         }
 
-        private void SetPedestrianActuation(int phaseNumber, string pedDetectors)
+        private void SetPedestrianActuation()
         {
             if (TimingAndActuationsForPhase.PedestrianEvents == null) return;
+            var pedPhaseOrOverLap = TimingAndActuationsForPhase.Approach.IsPedestrianPhaseOverlap ? "Ovl" : "ph";
+            var pedPhase = TimingAndActuationsForPhase.Approach.PedestrianPhaseNumber ?? TimingAndActuationsForPhase.Approach.ProtectedPhaseNumber;
             foreach (var pedEventElement in TimingAndActuationsForPhase.PedestrianEvents)
             {
                 if (pedEventElement.Value.Count == 0) continue;
@@ -470,7 +472,7 @@ namespace MOE.Common.Business.TimingAndActuations
                 {
                     ChartType = SeriesChartType.Point,
                     XValueType = ChartValueType.DateTime,
-                    Name = $"Ped Det. Actuations ph {phaseNumber}, ch {pedEventElement.Key}"
+                    Name = $"Ped Det. Actuations Ped {pedPhaseOrOverLap} {pedPhase}, ch {pedEventElement.Key}"
                 };
                 var pedEvents = pedEventElement.Value;
                 if (TimingAndActuationsForPhase.Options.ShowLinesStartEnd)

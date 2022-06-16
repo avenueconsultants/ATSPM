@@ -17,7 +17,6 @@ namespace MOE.Common.Business.TimingAndActuations
         public bool PhaseOrOverlap { get; set; }
         public Approach Approach { get; set; }
         public List<Plan> Plans { get; set; }
-
         public string PhaseNumberSort { get; set; }
         public bool GetPermissivePhase { get; }
         public TimingAndActuationsOptions Options { get; }
@@ -79,7 +78,7 @@ namespace MOE.Common.Business.TimingAndActuations
             }
             if (Options.ShowPedestrianIntervals && !GetPermissivePhase)
             {
-                var getPhaseOrOverlapEvents = !(approach.IsProtectedPhaseOverlap || approach.IsPermissivePhaseOverlap);
+                var getPhaseOrOverlapEvents = !Approach.IsPedestrianPhaseOverlap;
                 GetPedestrianIntervals(getPhaseOrOverlapEvents);
             }
             if (Options.ShowLaneByLaneCount)
@@ -501,10 +500,13 @@ namespace MOE.Common.Business.TimingAndActuations
             {
                 overlapCodes = new List<int> { 21, 22, 23 };
             }
+
+            var pedPhase = Approach.PedestrianPhaseNumber ?? Approach.ProtectedPhaseNumber;
+
             var controllerEventLogRepository = ControllerEventLogRepositoryFactory.Create();
             PedestrianIntervals = controllerEventLogRepository.GetEventsByEventCodesParam(Options.SignalID,
                 Options.StartDate.AddSeconds(-extendStartSearch), Options.EndDate.AddSeconds(extendStartSearch),
-                overlapCodes, PhaseNumber);
+                overlapCodes, pedPhase);
         }
     }
 }
