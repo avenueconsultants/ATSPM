@@ -78,7 +78,7 @@ namespace MOE.Common.Business.TimingAndActuations
             }
             if (Options.ShowPedestrianIntervals && !GetPermissivePhase)
             {
-                var getPhaseOrOverlapEvents = !Approach.IsPedestrianPhaseOverlap;
+                var getPhaseOrOverlapEvents = Approach.IsPedestrianPhaseOverlap;
                 GetPedestrianIntervals(getPhaseOrOverlapEvents);
             }
             if (Options.ShowLaneByLaneCount)
@@ -479,10 +479,11 @@ namespace MOE.Common.Business.TimingAndActuations
 
         private void GetPedestrianEvents()
         {
+            if (Approach.Signal.Pedsare1to1 && Approach.IsProtectedPhaseOverlap) return;
+
             var pedDetectors = Approach.GetPedDetectorsFromApproach();
             var extendStartTime = Options.ExtendVsdSearch * 60.0;
             var controllerEventLogRepository = ControllerEventLogRepositoryFactory.Create();
-            PedestrianEvents = new Dictionary<string, List<Controller_Event_Log>>();
             foreach (var pedDetector in pedDetectors)
             {
                 var pedDetectorEvents = new List<Controller_Event_Log>();
@@ -495,10 +496,10 @@ namespace MOE.Common.Business.TimingAndActuations
         public void GetPedestrianIntervals(bool phaseOrOverlap)
         {
             var extendStartSearch = Options.ExtendStartStopSearch * 60.0;
-            var overlapCodes = new List<int> { 67, 68, 69 };
+            var overlapCodes = new List<int> { 21, 22, 23 };
             if (phaseOrOverlap)
             {
-                overlapCodes = new List<int> { 21, 22, 23 };
+                overlapCodes = new List<int> { 67, 68, 69 };
             }
 
             var pedPhase = Approach.PedestrianPhaseNumber ?? Approach.ProtectedPhaseNumber;

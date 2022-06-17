@@ -164,19 +164,19 @@ namespace MOE.Common.Business.WCFServiceLibrary
                 {
                     if (PhaseFilterList.Any() && PhaseFilterList.Contains(approach.ProtectedPhaseNumber) || PhaseFilterList.Count == 0)
                     {
-                        var phaseOrOverlap = true;
+                        var phaseOrOverlap = false;
                         timingAndActuationsForPhases.Add(new TimingAndActuationsForPhase(approach, approach.ProtectedPhaseNumber, phaseOrOverlap, this));
                         timingAndActuationsForPhases[phaseCounter++].PhaseNumberSort = "Phase - " + approach.ProtectedPhaseNumber.ToString("D2");
-                        phaseOrOverlap = false;
+                        phaseOrOverlap = true;
                         timingAndActuationsForPhases.Add(new TimingAndActuationsForPhase(approach, approach.ProtectedPhaseNumber, phaseOrOverlap, this));
                         timingAndActuationsForPhases[phaseCounter++].PhaseNumberSort = "zOverlap - " + approach.ProtectedPhaseNumber.ToString("D2");
                     }
                     if (approach.PermissivePhaseNumber.HasValue && (PhaseFilterList.Any() && PhaseFilterList.Contains(approach.PermissivePhaseNumber.Value) || PhaseFilterList.Count == 0))
                     {
-                        var phaseOrOverlap = true;
+                        var phaseOrOverlap = false;
                         timingAndActuationsForPhases.Add(new TimingAndActuationsForPhase(approach, approach.PermissivePhaseNumber.Value, phaseOrOverlap, this));
                         timingAndActuationsForPhases[phaseCounter++].PhaseNumberSort = "Phase - " + approach.PermissivePhaseNumber.Value.ToString("D2");
-                        phaseOrOverlap = false;
+                        phaseOrOverlap = true;
                         timingAndActuationsForPhases.Add(new TimingAndActuationsForPhase(approach, approach.PermissivePhaseNumber.Value, phaseOrOverlap, this));
                         timingAndActuationsForPhases[phaseCounter++].PhaseNumberSort = "zOverlap - " + approach.PermissivePhaseNumber.Value.ToString("D2");
                     }
