@@ -479,7 +479,12 @@ namespace MOE.Common.Business.TimingAndActuations
 
         private void GetPedestrianEvents()
         {
-            if (Approach.Signal.Pedsare1to1 && Approach.IsProtectedPhaseOverlap) return;
+            PedestrianEvents = new Dictionary<string, List<Controller_Event_Log>>();
+
+            if (Approach.Signal.Pedsare1to1 && Approach.IsProtectedPhaseOverlap 
+                || !Approach.Signal.Pedsare1to1 && Approach.PedestrianPhaseNumber.HasValue 
+                && String.IsNullOrEmpty(Approach.PedestrianDetectors)) 
+                return;
 
             var pedDetectors = Approach.GetPedDetectorsFromApproach();
             var extendStartTime = Options.ExtendVsdSearch * 60.0;
