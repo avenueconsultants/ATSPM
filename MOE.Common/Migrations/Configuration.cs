@@ -272,36 +272,6 @@ namespace MOE.Common.Migrations
                     Application = "SignalPerformanceMetrics",
                     DisplayOrder = 50
                 },
-                //new Menu
-                //{
-                //    MenuId = 32,
-                //    MenuName = "UDOT Traffic Signal Documents",
-                //    Controller = "#",
-                //    Action = "#",
-                //    ParentId = 0,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 60
-                //},
-                //new Menu
-                //{
-                //    MenuId = 6,
-                //    MenuName = "ATSPM Manuals",
-                //    Controller = "#",
-                //    Action = "#",
-                //    ParentId = 0,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 70
-                //},
-                //new Menu
-                //{
-                //    MenuId = 7,
-                //    MenuName = "ATSPM Presentations",
-                //    Controller = "#",
-                //    Action = "#",
-                //    ParentId = 0,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 80
-                //},
                 new Menu
                 {
                     MenuId = 17,
@@ -392,126 +362,6 @@ namespace MOE.Common.Migrations
                     Application = "SignalPerformanceMetrics",
                     DisplayOrder = 25
                 },
-                //new Menu
-                //{
-                //    MenuId =42,
-                //    MenuName = "GDOT ATSPM Installation Manual",
-                //    Controller = "Images",
-                //    Action = "ATSPM_Installation_Manual_2020-01-28.pdf",
-                //    ParentId = 6,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 10
-                //},
-                //new Menu
-                //{
-                //    MenuId = 34,
-                //    MenuName = "GDOT ATSPM Component Details",
-                //    Controller = "Images",
-                //    Action = "ATSPM_Component_Details_20200120.pdf",
-                //    ParentId = 6,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 20
-                //},
-                //new Menu
-                //{
-                //    MenuId = 43,
-                //    MenuName = "GDOT ATSPM Reporting Details",
-                //    Controller = "Images",
-                //    Action = "ATSPM_Reporting_Details_20200121.pdf",
-                //    ParentId = 6,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 30
-                //},
-                //new Menu
-                //{
-                //    MenuId = 70,
-                //    MenuName = "ATSPM_User Case Examples_Manual",
-                //    Controller = "Images",
-                //    Action = "ATSPM_User Case Examples_Manual_20200128.pdf",
-                //    ParentId = 6,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 40
-                //},
-                //new Menu
-                //{
-                //    MenuId = 38,
-                //    MenuName = "ATSPM ITS California 9-21-16",
-                //    Controller = "Images",
-                //    Action = "ATSPM_ITS_CA_9-21-16.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 10
-                //},
-                //new Menu
-                //{
-                //    MenuId = 37,
-                //    MenuName = "ATSPM CO WY ITE & Rocky Mtn 10-20-16",
-                //    Controller = "Images",
-                //    Action = "ATSPM_CO-WY_ITE___ITS_Rocky_Mtn_10-20-16.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 20
-                //},
-                //new Menu
-                //{
-                //    MenuId = 36,
-                //    MenuName = "ATSPM EDC4 Minnesota 10-25-16",
-                //    Controller = "Images",
-                //    Action = "ATSPM_EDC4_Minnesota_10-25-16.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 30
-                //},
-                //new Menu
-                //{
-                //    MenuId = 35,
-                //    MenuName = "ATSPM UDOT Conference 11-2-16",
-                //    Controller = "Images",
-                //    Action = "ATSPM_UDOT_Conference_11-2-16.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 40
-                //},
-                //new Menu
-                //{
-                //    MenuId = 45,
-                //    MenuName = "Mark Taylor",
-                //    Controller = "Images",
-                //    Action = "TTTMarkTaylor.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 50
-                //},
-                //new Menu
-                //{
-                //    MenuId = 62,
-                //    MenuName = "ATSPM UDOT Conference 11-6-18",
-                //    Controller = "Images",
-                //    Action = "Session 27_ATSPMs_UDOT Conference_20181106.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 60
-                //},
-                //new Menu
-                //{
-                //    MenuId = 46,
-                //    MenuName = "Jamie Mackey",
-                //    Controller = "Images",
-                //    Action = "TTTJamieMackey.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 70
-                //},
-                //new Menu
-                //{
-                //    MenuId = 47,
-                //    MenuName = "Derek Lowe & Shane Johnson",
-                //    Controller = "Images",
-                //    Action = "TTTDerekLoweShaneJohnson.pdf",
-                //    ParentId = 7,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 80
-                //},
                 new Menu
                 {
                     MenuId = 12,
@@ -631,202 +481,6 @@ namespace MOE.Common.Migrations
                     ParentId = 11,
                     Application = "SignalPerformanceMetrics",
                     DisplayOrder = 31
-                }
-                //new Menu
-                //{
-                //    MenuId = 61,
-                //    MenuName = "NEMA Phase # Convention at UDOT",
-                //    Controller = "Images",
-                //    Action = "NEMA Phase # Convention UDOT.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 10
-                //},
-                //new Menu
-                //{
-                //    MenuId = 39,
-                //    MenuName = "TSMP UDOT V1-2 2-5-16",
-                //    Controller = "Images",
-                //    Action = "TSMP_UDOT_v1-2_2-5-16.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 20
-                //},
-                //new Menu
-                //{
-                //    MenuId = 40,
-                //    MenuName = "Emergency Traffic Signal Response Plan UDOT 5-6-16",
-                //    Controller = "Images",
-                //    Action = "EmergencyTrafficSignalResponsePlanUDOT5-6-16.pdf",
-                //    ParentId = 4,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 1
-                //},
-                //new Menu
-                //{
-                //    MenuId = 41,
-                //    MenuName = "Signal Ops QIT Final Report",
-                //    Controller = "Images",
-                //    Action = "Signal Ops QIT Final Report Released.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 40
-                //},
-                //new Menu
-                //{
-                //    MenuId = 55,
-                //    MenuName = "Detector Accuracy Information",
-                //    Controller = "Images",
-                //    Action = "DetectorAccuracyInformation.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 50
-                //},
-                //new Menu
-                //{
-                //    MenuId = 60,
-                //    MenuName = "Wavetronix Matrix Latency Information",
-                //    Controller = "Images",
-                //    Action = "WavetronixMatrixLatencyInformation.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 60
-                //},
-                //new Menu
-                //{
-                //    MenuId = 64,
-                //    MenuName = "UDOT Detection Form 2019-04-09",
-                //    Controller = "Images",
-                //    Action = "UDOT Detection Form 2019-04-09.xlsm",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 70 
-                //},
-                //new Menu
-                //{
-                //    MenuId = 65,
-                //    MenuName = "UDOT Detection Form Printable Tables 2019-04-09",
-                //    Controller = "Images",
-                //    Action = "UDOT Detection Form Printable Tables 20190409.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 80 
-                //},
-                //new Menu
-                //{
-                //    MenuId = 68,
-                //    MenuName = "Examples of Detector Setup DZ",
-                //    Controller = "Images",
-                //    Action = "Examples of Detector Setup 2017-05-02.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 90
-                //},
-                //new Menu
-                //{
-                //    MenuId = 69,
-                //    MenuName = "Configuration - Detection Type - Log Action Taken",
-                //    Controller = "Images",
-                //    Action = "Configuration-DetectionType-LogActionTaken.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 100
-                //},
-                //new Menu
-                //{
-                //    MenuId = 66,
-                //    MenuName = "AWS LFT and Detection Worksheets 2019-04-10",
-                //    Controller = "Images",
-                //    Action = "AWS LFT and Detection Worksheets 2019-04-10.xlsm",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder =110
-                //},
-                //new Menu
-                //{
-                //    MenuId = 67,
-                //    MenuName = "AWS LFT and Detection Worksheets Printable ",
-                //    Controller = "Images",
-                //    Action = "AWS LFT and Detection Worksheets Printable.pdf",
-                //    ParentId = 32,
-                //    Application = "SignalPerformanceMetrics",
-                //    DisplayOrder = 120
-                //}
-            );
-
-            context.ExternalLinks.AddOrUpdate(
-                c => c.DisplayOrder,
-                new ExternalLink
-                {
-                    Name = "Indiana Hi Resolution Data Logger Enumerations",
-                    DisplayOrder = 1,
-                    Url = " https://docs.lib.purdue.edu/jtrpdata/3/"
-                },
-                new ExternalLink
-                {
-                    Name = "Florida ATSPM",
-                    DisplayOrder = 2,
-                    Url = "https://atspm.cflsmartroads.com/ATSPM"
-                },
-                new ExternalLink
-                {
-                    Name = "FAST (Southern Nevada)",
-                    DisplayOrder = 3,
-                    Url = "http://challenger.nvfast.org/spm"
-                },
-                new ExternalLink
-                {
-                    Name = "Georgia ATSPM",
-                    DisplayOrder = 4,
-                    Url = "https://traffic.dot.ga.gov/atspm"
-                },
-                new ExternalLink
-                {
-                    Name = "Arizona ATSPM",
-                    DisplayOrder = 5,
-                    Url = "http://spmapp01.mcdot-its.com/ATSPM"
-                },
-                new ExternalLink
-                {
-                    Name = "Alabama ATSPM",
-                    DisplayOrder = 6,
-                    Url = "http://signalmetrics.ua.edu"
-                },
-                 new ExternalLink
-                {
-                    Name = "PennDOT ATSPM Interface",
-                    DisplayOrder = 7,
-                    Url = "https://www.dot.state.pa.us/public/Bureaus/BOMO/Portal/ATSPM/index.html"
-                },
-                new ExternalLink
-                {
-                    Name = "ATSPM Workshop 2016 SLC",
-                    DisplayOrder = 8,
-                    Url = "http://docs.lib.purdue.edu/atspmw/2016"
-                },
-                new ExternalLink
-                {
-                    Name = "Train The Trainer Webinar Day 1 - Morning",
-                    DisplayOrder = 9,
-                    Url = "https://connectdot.connectsolutions.com/p75dwqefphk   "
-                },
-                new ExternalLink
-                {
-                    Name = "Train The Trainer Webinar Day 1 - Afternoon",
-                    DisplayOrder = 10,
-                    Url = "https://connectdot.connectsolutions.com/p6l6jaoy3gj"
-                },
-                new ExternalLink
-                {
-                    Name = "Train The Trainer Webinar Day 2 - Morning",
-                    DisplayOrder = 11,
-                    Url = "https://connectdot.connectsolutions.com/p6mlkvekogo/"
-                },
-                new ExternalLink
-                {
-                    Name = "Train The Trainer Webinar Day 2 - Mid Morning",
-                    DisplayOrder = 12,
-                    Url = "https://connectdot.connectsolutions.com/p3ua8gtj09r/"
                 }
             );
             context.ControllerType.AddOrUpdate(
@@ -1408,17 +1062,17 @@ namespace MOE.Common.Migrations
 
             context.Applications.AddOrUpdate(
                 c => c.ID,
-                new Application { ID = 1, Name = "ATSPM" },
-                new Application { ID = 2, Name = "SPMWatchDog" },
-                new Application { ID = 3, Name = "DatabaseArchive" },
-                new Application { ID = 4, Name = "GeneralSetting" }
+                new Application { ID = 1, Name = "GeneralSetting" },
+                new Application { ID = 2, Name = "ATSPM" },
+                new Application { ID = 3, Name = "SPMWatchDog" },
+                new Application { ID = 4, Name = "DatabaseArchive" }
             );
 
             context.WatchdogApplicationSettings.AddOrUpdate(
                 c => c.ApplicationID,
                 new WatchDogApplicationSettings
                 {
-                    ApplicationID = 2,
+                    ApplicationID = 3,
                     ConsecutiveCount = 3,
                     DefaultEmailAddress = "SomeOne@AnEmail.address",
                     EmailServer = "send.EmailServer",
@@ -1441,21 +1095,11 @@ namespace MOE.Common.Migrations
             context.DatabaseArchiveSettings.AddOrUpdate(m => m.ApplicationID,
                 new DatabaseArchiveSettings
                 {
-                    ApplicationID = 3,
+                    ApplicationID = 4,
                     ArchivePath = @"\\ATSPM_Backup_DataTables\tcshare2\MOEFlatFiles\",
                 }
             );
 
-            context.GeneralSettings.AddOrUpdate(
-                c => c.ApplicationID,
-                new Models.GeneralSettings
-                {
-                    ApplicationID = 4,
-                    RawDataCountLimit = 1048576,
-                    ImageUrl = "http://defaultWebServer/spmimages/",
-                    ImagePath = @"\\defaultWebserver\SPMImages\"
-                }
-            );
 
             context.LaneTypes.AddOrUpdate(
                 new LaneType { LaneTypeID = 1, Description = "Vehicle", Abbreviation = "V" },
@@ -1473,15 +1117,8 @@ namespace MOE.Common.Migrations
                 new MovementType { MovementTypeID = 1, Description = "Thru", Abbreviation = "T", DisplayOrder = 3 },
                 new MovementType { MovementTypeID = 2, Description = "Right", Abbreviation = "R", DisplayOrder = 5 },
                 new MovementType { MovementTypeID = 3, Description = "Left", Abbreviation = "L", DisplayOrder = 1 },
-                new MovementType
-                {
-                    MovementTypeID = 4,
-                    Description = "Thru-Right",
-                    Abbreviation = "TR",
-                    DisplayOrder = 4
-                },
+                new MovementType { MovementTypeID = 4, Description = "Thru-Right", Abbreviation = "TR", DisplayOrder = 4 },
                 new MovementType { MovementTypeID = 5, Description = "Thru-Left", Abbreviation = "TL", DisplayOrder = 2 },
-
                 new MovementType { MovementTypeID = 6, Description = "None", Abbreviation = "na", DisplayOrder = 6 }
             );
             context.SaveChanges();
@@ -1543,103 +1180,7 @@ namespace MOE.Common.Migrations
                     Abbreviation = "SW",
                     DisplayOrder = 8
                 }
-            //new DirectionType
-            //    {
-            //        DirectionTypeID = 9,
-            //        Description = "None",
-            //        Abbreviation = " ",
-            //        DisplayOrder = 9
-            //    }
             );
-
-            //context.ToBeProcessededTables.AddOrUpdate(t => t.PartitionedTableName,
-            //    new ToBeProcessededTable()
-            //    {
-            //        PartitionedTableName = "Controller_Event_Log",
-            //        UpdatedTime = Convert.ToDateTime("2018-05-13 00:20:00.000"),
-            //        PreserveDataSelect = "SELECT [SignalID], [Timestamp], [EventCode], [EventParam]",
-            //        TableId = 1,
-            //        PreserveDataWhere =
-            //            "WHERE SignalID in (select SignalID from  [dbo].[DatabaseArchiveExcludedSignals] )",
-            //        InsertValues = "INSERT INTO [SignalID], [Timestamp], [EventCode], [EventParam]",
-            //        DataBaseName = "Moe",
-            //        Verbose = true,
-
-            //                    //CreateColumns4Table = @"[SignalID] [nvarchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, 
-            //                    //                        [Timestamp] [datetime2](7) NOT NULL, [EventCode] [int] NOT NULL, [EventParam] [int] NOT NULL"
-            //                    CreateColumns4Table = @"[SignalID] [nvarchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS, 
-            //                                            [Timestamp] [datetime2](7), [EventCode] [int], [EventParam] [int]"
-            //    },
-            //    new ToBeProcessededTable()
-            //    {
-            //        PartitionedTableName = "Speed_Events",
-            //        UpdatedTime = Convert.ToDateTime("2018-05-13 00:20:00.000"),
-            //        PreserveDataSelect = "SELECT [DetectorID], [MPH], [KPH], [Timestamp]",
-            //        TableId = 2,
-            //        PreserveDataWhere = @" WHERE  DetectorID  in 
-            //                                            (SELECT [DetectorID]   
-            //                                            FROM [dbo].[Detectors]   
-            //                                             WHERE  [ApproachID]  in  
-            //                                                (SELECT [ApproachID]  
-            //                                                 FROM  [dbo].[Approaches]   
-            //                                                 WHERE [SignalID]  in  
-            //                                                    (Select [SignalId]  
-            //                                                     FROM  [dbo].[DatabaseArchiveExcludedSignals] )))",
-            //        InsertValues = "Insert into [DetectorID], [MPH], [KPH], [Timestamp]",
-            //        DataBaseName = "MoePartition",
-            //        Verbose = true,
-            //        CreateColumns4Table =
-            //            "[DetectorID] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, [MPH] [int] NOT NULL, [KPH] [int] NOT NULL, [Timestamp] [datetime2](7) NOT NULL"
-            //    }
-            //);
-
-            //context.ToBeProcessededIndexes.AddOrUpdate(t => t.IndexName,
-            //    new ToBeProcessedTableIndex()
-            //    {
-            //        TableId = 1,
-            //        IndexId = 1,
-            //        ClusteredText = "Clustered",
-            //        TextForIndex =
-            //            "([Timestamp] ASC) WITH (PAD_INDEX = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)",
-            //        IndexName = "IX_Clustered_Controller_Event_Log_Temp"
-            //    },
-            //    new ToBeProcessedTableIndex()
-            //    {
-            //        TableId = 1,
-            //        IndexId = 2,
-            //        ClusteredText = "NonClustered",
-            //        TextForIndex =
-            //            "([SignalID] ASC, [Timestamp] ASC, [EventCode] ASC, [EventParam] ASC) WITH (PAD_INDEX = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)",
-            //        IndexName = "IX_Controller_Event_Log"
-            //    },
-            //    new ToBeProcessedTableIndex()
-            //    {
-            //        TableId = 2,
-            //        IndexId = 1,
-            //        ClusteredText = "Clustered",
-            //        TextForIndex =
-            //            "([Timestamp] ASC) WITH (PAD_INDEX = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)",
-            //        IndexName = "IX_Clustered_Speed_Events"
-            //    },
-            //    new ToBeProcessedTableIndex()
-            //    {
-            //        TableId = 2,
-            //        IndexId = 2,
-            //        ClusteredText = "NonClustered",
-            //        TextForIndex =
-            //            "([DetectorID] ASC, [Timestamp] ASC) WITH (PAD_INDEX = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)",
-            //        IndexName = "IX_ByDetID"
-            //    },
-            //    new ToBeProcessedTableIndex()
-            //    {
-            //        TableId = 2,
-            //        IndexId = 3,
-            //        ClusteredText = "NonClustered",
-            //        TextForIndex =
-            //            "([Timestamp] ASC, [DetectorID] ASC) WITH (PAD_INDEX = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)",
-            //        IndexName = "ByTimestampByDetID"
-            //    }
-            //);
 
             context.Regions.AddOrUpdate(
                 new Region { ID = 1, Description = "Region 1" },
@@ -1703,27 +1244,27 @@ namespace MOE.Common.Migrations
                 userManager.Create(user, "L3tM3in!");
                 roleManager.Create(new IdentityRole("Admin"));
                 roleManager.Create(new IdentityRole("User"));
+                roleManager.Create(new IdentityRole("Data"));
+                roleManager.Create(new IdentityRole("Technician"));
+                roleManager.Create(new IdentityRole("Configuration"));
+                roleManager.Create(new IdentityRole("Restricted Configuration"));
                 userManager.AddToRole(user.Id, "Admin");
                 userManager.AddToRole(user.Id, "User");
-                roleManager.Create(new IdentityRole("Technician"));
-                userManager.AddToRole(user.Id, "Technician");
-                roleManager.Create(new IdentityRole("Data"));
                 userManager.AddToRole(user.Id, "Data");
-                roleManager.Create(new IdentityRole("Configuration"));
+                userManager.AddToRole(user.Id, "Technician");
                 userManager.AddToRole(user.Id, "Configuration");
-                roleManager.Create(new IdentityRole("Restricted Configuration"));
                 userManager.AddToRole(user.Id, "Restricted Configuration");
             }
             else
             {
                 var user = userManager.FindByName("DefaultAdmin@SPM.Gov");
                 roleManager.Create(new IdentityRole("Technician"));
-                userManager.AddToRole(user.Id, "Technician");
                 roleManager.Create(new IdentityRole("Data"));
-                userManager.AddToRole(user.Id, "Data");
                 roleManager.Create(new IdentityRole("Configuration"));
-                userManager.AddToRole(user.Id, "Configuration");
                 roleManager.Create(new IdentityRole("Restricted Configuration"));
+                userManager.AddToRole(user.Id, "Data");
+                userManager.AddToRole(user.Id, "Technician");
+                userManager.AddToRole(user.Id, "Configuration");
                 userManager.AddToRole(user.Id, "Restricted Configuration");
             }
 
