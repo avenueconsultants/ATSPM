@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MOE.Common.Business;
 using MOE.Common.Models;
 using MOE.Common.Models.Repositories;
+using System.Data.Entity;
 using Detector = MOE.Common.Models.Detector;
 using Signal = MOE.Common.Models.Signal;
 
@@ -341,6 +342,15 @@ namespace MOE.CommonTests.Models
 
             //return signallist;
 
+        }
+
+        public IQueryable<Signal> GetLatestVersionOfAllSignalsAsQueryable()
+        {
+            var activeSignals = _db.Signals.Where(r => r.VersionActionId != 3)
+                    .GroupBy(r => r.SignalID)
+                    .Select(g => g.OrderByDescending(r => r.Start).FirstOrDefault());
+
+            return (IQueryable<Signal>)activeSignals;
         }
 
         public SignalFTPInfo GetSignalFTPInfoByID(string signalID)

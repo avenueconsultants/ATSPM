@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Business\SignalPhase\SignalPhase24HrsVs15MinsTest.cs" />
     <Compile Include="Business\PCD\UnitTest1.cs" />
+    <Compile Include="Business\PEDDelay\PEDDelayTest.cs" />
     <Compile Include="Business\WCFServiceLibrary\NonAggregateCharts\AoROptionsTests.cs" />
     <Compile Include="Business\WCFServiceLibrary\ApproachSplitFailAggregationChart\ApproachSplitFailAggregationApproachXTests .cs" />
     <Compile Include="Business\WCFServiceLibrary\ApproachSplitFailAggregationChart\ApproachSplitFailAggregationTimeXApproachSeriesTests.cs" />

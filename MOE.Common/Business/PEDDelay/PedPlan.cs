@@ -19,7 +19,7 @@ namespace MOE.Common.Business.PEDDelay
         public DateTime EndDate { get; }
         public int PlanNumber { get; }
         public int PhaseNumber { get; }
-        public List<Controller_Event_Log> Events { get; set; }
+        public List<Controller_Event_Log> Events { get; set; } = new List<Controller_Event_Log>();
         public List<PedCycle> Cycles { get; set; } = new List<PedCycle>();
         public int UniquePedDetections { get; set; }
         public double CyclesWithPedRequests => Cycles.Count;
