@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using MOE.Common.Business.PEDDelay;
 using MOE.Common.Models.Repositories;
 using MOE.Common.Models;
@@ -7,7 +7,6 @@ using System;
 
 namespace MOE.CommonTests.Business.PEDDelay
 {
-    [TestClass]
     public class PEDDelayTest
     {
         private Signal Signal { get; set; }
@@ -15,7 +14,7 @@ namespace MOE.CommonTests.Business.PEDDelay
         private DateTime EndTime { get; set; }
         private PedDelaySignal PedDelaySignal { get; set; }
 
-        [TestInitialize]
+        [Fact]
         public void Initialize()
         {
             var signalRepository = SignalsRepositoryFactory.Create();
@@ -25,74 +24,81 @@ namespace MOE.CommonTests.Business.PEDDelay
             PedDelaySignal = new PedDelaySignal(Signal, 15, StartTime, EndTime);
         }
 
-        [TestMethod]
+        [Fact]
         public void PedPlan_PedRecallWhenEventsCountIsNull_ReturnsFalse()
         {
-            var pedPlan = new PedPlan(0, StartTime, EndTime, 0);
-            Assert.IsFalse(pedPlan.PedRecallOn);
+            var pedPlan = new PedPlan(0, StartTime, EndTime, 0);          
+            Assert.False(pedPlan.PedRecallOn);
         }
 
-        [TestMethod]
+        [Fact]
         public void PedPlan_PedCallsRegisteredCount_Equals2()
         {
+            Initialize();
             var pedPhase = PedDelaySignal.PedPhases.Where(p => p.PhaseNumber == 2).FirstOrDefault();
             var plan = pedPhase.Plans.FirstOrDefault();
 
-            Assert.AreEqual(2, plan.PedCallsRegisteredCount);
+            Assert.Equal(2, plan.PedCallsRegisteredCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void PedPlan_PedCallsBeginWalkCount_Equals2()
         {
+            Initialize();
             var pedPhase = PedDelaySignal.PedPhases.Where(p => p.PhaseNumber == 2).FirstOrDefault();
             var plan = pedPhase.Plans.FirstOrDefault();
 
-            Assert.AreEqual(2, plan.PedBeginWalkCount);
+            Assert.Equal(2, plan.PedBeginWalkCount);
         }
 
-        [TestMethod]
+        [Fact]
         public void PedPlan_PedRecall_EqualsFalse()
         {
+            Initialize();
             var pedPhase = PedDelaySignal.PedPhases.Where(p => p.PhaseNumber == 2).FirstOrDefault();
             var plan = pedPhase.Plans.FirstOrDefault();
 
-            Assert.IsFalse(plan.PedRecallOn);
+            Assert.False(plan.PedRecallOn);
         }
 
-        [TestMethod]
+        [Fact]
         public void PedPlan_PlanType_EqualsFree()
         {
+            Initialize();
             var pedPhase = PedDelaySignal.PedPhases.Where(p => p.PhaseNumber == 2).FirstOrDefault();
             var plan = pedPhase.Plans.FirstOrDefault();
 
-            Assert.AreEqual(254, plan.PlanNumber);
+            Assert.Equal(254, plan.PlanNumber);
         }
 
-        [TestMethod]
+        [Fact]
         public void PedDelayChart_PedPhaseAndPedPlan_CyclesWithPedDelayMatch()
         {
+            Initialize();
             var pedPhase = PedDelaySignal.PedPhases.Where(p => p.PhaseNumber == 2).FirstOrDefault();
             var pedPlans = pedPhase.Plans;
 
-            Assert.AreEqual(pedPhase.Cycles.Count, pedPlans.Sum(p => p.Cycles.Count));
+            Assert.Equal(pedPhase.Cycles.Count, pedPlans.Sum(p => p.Cycles.Count));
         }
 
-        [TestMethod]
+        [Fact]
         public void PedPhase_PedPhaseCount_PedPressesEquals7()
         {
+            Initialize();
             var pedPhase = PedDelaySignal.PedPhases.Where(p => p.PhaseNumber == 2).FirstOrDefault();
             var plan = pedPhase.Plans.FirstOrDefault();
 
-            Assert.AreEqual(205, pedPhase.PedPresses);
+            Assert.Equal(205, pedPhase.PedPresses);
         }
 
-        [TestMethod]
+        [Fact]
         public void PedPlan_EventCount_Equals13()
         {
+            Initialize();
             var pedPhase = PedDelaySignal.PedPhases.Where(p => p.PhaseNumber == 2).FirstOrDefault();
             var plan = pedPhase.Plans.FirstOrDefault();
 
-            Assert.AreEqual(13, plan.Events.Count);
+            Assert.Equal(13, plan.Events.Count);
         }
     }
 }
