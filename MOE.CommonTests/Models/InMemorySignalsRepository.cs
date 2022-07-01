@@ -151,6 +151,15 @@ namespace MOE.CommonTests.Models
                 //_db.SaveChanges();
             }
         }
+        public IQueryable<Signal> GetLatestVersionOfAllSignalsAsQueryable()
+        {
+            var activeSignals = _db.Signals.Where(r => r.VersionActionId != 3)
+                    .GroupBy(r => r.SignalID)
+                    .Select(g => g.OrderByDescending(r => r.Start).FirstOrDefault());
+
+            return activeSignals.AsQueryable();
+
+        }
 
         public List<Signal> GetAllVersionsOfSignalBySignalID(string signalId)
         {
