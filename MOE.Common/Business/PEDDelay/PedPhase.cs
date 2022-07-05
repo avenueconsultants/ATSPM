@@ -15,7 +15,7 @@ namespace MOE.Common.Business.PEDDelay
             StartDate = startDate;
             EndDate = endDate;
             Approach = approach;
-            PhaseNumber = approach.ProtectedPhaseNumber;
+            PhaseNumber = approach.ApproachID;
             EndDate = endDate;
             Plans = new List<PedPlan>();
             Cycles = new List<PedCycle>();

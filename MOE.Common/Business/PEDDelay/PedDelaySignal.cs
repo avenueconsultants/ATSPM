@@ -30,10 +30,15 @@ namespace MOE.Common.Business.PEDDelay
                 _Plans = new PlansBase(_SignalID, startDate, endDate);
                 ConcurrentBag<PedPhase> pedPhases = new ConcurrentBag<PedPhase>();
 
-                foreach (var approach in signal.Approaches)
+                var pedPhaseNumbers = ControllerEventLogs.GetPedPhases(_SignalID, startDate, endDate);
+
+                if (pedPhaseNumbers.Count > 0 && signal.Approaches != null)
                 {
-                    var pedPhase = new PedPhase(approach, signal, timeBuffer, startDate, endDate, _Plans);
-                    pedPhases.Add(pedPhase);
+                    foreach (var approach in signal.Approaches)
+                    {
+                        var pedPhase = new PedPhase(approach, signal, timeBuffer, startDate, endDate, _Plans);
+                        pedPhases.Add(pedPhase);
+                    }
                 }
 
                 _PedPhases = pedPhases.OrderBy(x => x.PhaseNumber).ToList();
