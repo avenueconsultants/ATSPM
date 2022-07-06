@@ -130,7 +130,7 @@ namespace MOE.Common.Business.PEDDelay
                     if (Options.ShowPedBeginWalk)
                     {
                         Chart.Series["Start of Begin Walk"].Points
-                            .AddXY(pedCycle.BeginWalk, pedCycle.Delay + 3); //add ped walk to top of delay
+                            .AddXY(pedCycle.BeginWalk, pedCycle.Delay); //add ped walk to top of delay
                     }
 
                     if (Options.ShowPercentDelay)
