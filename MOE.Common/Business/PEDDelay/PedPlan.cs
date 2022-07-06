@@ -66,12 +66,5 @@ namespace MOE.Common.Business.PEDDelay
                 return 0;
             }
         }
-        public bool PedRecallOn
-        {
-            get
-            {
-                return (double)PedBeginWalkCount / ((double)PedCallsRegisteredCount + PedBeginWalkCount) * 100 >= 65;
-            }
-        }
     }
 }
