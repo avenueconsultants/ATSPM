@@ -27,7 +27,7 @@ namespace MOE.Common.Business.PEDDelay
         {
             get
             {
-                return Events.Where(e => e.EventCode == 21).Count();
+                return Events.Where(e => e.EventCode == 21 || e.EventCode == 67).Count();
             }
         }
         public double PedCallsRegisteredCount
