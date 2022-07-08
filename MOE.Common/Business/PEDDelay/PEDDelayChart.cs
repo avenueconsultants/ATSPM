@@ -152,7 +152,7 @@ namespace MOE.Common.Business.PEDDelay
                 foreach (var e in PedPhase.PedBeginWalkEvents)
                 {
                     Chart.Series["Start of Begin Walk"].Points
-                            .AddXY(e.Timestamp, 2);
+                            .AddXY(e.Timestamp, 0);
                 }
             }
 
