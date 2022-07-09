@@ -505,10 +505,6 @@
     <Compile Include="Migrations\202206091913388_ChangePedActuationsToPedRequests.designer.cs">
       <DependentUpon>202206091913388_ChangePedActuationsToPedRequests.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207061520118_AddApproachToPhasePedAgg.cs" />
-    <Compile Include="Migrations\202207061520118_AddApproachToPhasePedAgg.designer.cs">
-      <DependentUpon>202207061520118_AddApproachToPhasePedAgg.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Area.cs" />
     <Compile Include="Data\MOE.cs">
       <DependentUpon>MOE.xsd</DependentUpon>
@@ -1183,9 +1179,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202206091913388_ChangePedActuationsToPedRequests.resx">
       <DependentUpon>202206091913388_ChangePedActuationsToPedRequests.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207061520118_AddApproachToPhasePedAgg.resx">
-      <DependentUpon>202207061520118_AddApproachToPhasePedAgg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\CustomStuffForExistingUpgrade.txt" />
     <EmbeddedResource Include="Migrations\FillDetectorTypeMetricTypesTable.SQL" />
