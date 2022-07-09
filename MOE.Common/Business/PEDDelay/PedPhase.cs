@@ -55,7 +55,6 @@ namespace MOE.Common.Business.PEDDelay
             SetHourlyTotals();
         }
         public Approach Approach { get; set; }
-        public int ApproachID { get; set; }
         public int PhaseNumber { get; }
         public string SignalID { get; }
         public List<PedCycle> Cycles { get; }
