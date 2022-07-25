@@ -71,6 +71,11 @@ namespace SPM.Controllers
                 GapOutThreshold = cyclesWithGapOuts/100
             };
             var checkResults = new List<SignalDataCheckReportViewModel>();
+
+            ViewBag.VolumePerHourThreshold = leftTurnVolume;
+            ViewBag.PedestrianThreshold = cyclesWithPedCalls;
+            ViewBag.GapOutThreshold = cyclesWithGapOuts;
+
             foreach (int approachId in approachIds)
             {
                 dataCheckPayload.ApproachId = approachId;
