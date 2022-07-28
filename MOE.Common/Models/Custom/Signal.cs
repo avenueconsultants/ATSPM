@@ -63,13 +63,11 @@ namespace MOE.Common.Models
 
         public string GetAreasString()
         {
-            var areasString = string.Empty;
+            var areasString = ",";
             foreach (var area in GetAreas())
                 areasString += area.Id + ",";
 
-            if (!string.IsNullOrEmpty(areasString))
-                areasString = areasString.TrimEnd(',');
-            else
+            if (string.IsNullOrEmpty(areasString))
                 areasString = "null";
 
             return areasString;
