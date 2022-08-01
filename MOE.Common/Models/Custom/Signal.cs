@@ -67,9 +67,6 @@ namespace MOE.Common.Models
             foreach (var area in GetAreas())
                 areasString += area.Id + ",";
 
-            if (string.IsNullOrEmpty(areasString))
-                areasString = "null";
-
             return areasString;
         }
 
