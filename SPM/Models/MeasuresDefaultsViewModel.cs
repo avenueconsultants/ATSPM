@@ -24,6 +24,7 @@ namespace SPM.Models
         public TMCDefaultValuesViewModel TMC { get; set; }
         public WaitTimeDefaultValuesViewModel WaitTime { get; set; }
         public YellowAndRedDefaultValuesViewModel YellowAndRed { get; set; }
+        public GreenTimeUtilizationDefaultValuesViewModel GreenTimeUtilization { get; set; }
     }
     public class PhaseTerminationDefaultValuesViewModel
     {
@@ -283,5 +284,16 @@ namespace SPM.Models
         public bool ShowYellowLightOccurrences { get; set; }
         [Display(Name = "Y-axis Max")]
         public double YAxisMax { get; set; }
+    }
+
+    public class GreenTimeUtilizationDefaultValuesViewModel
+    {
+        [Display(Name = "Bin Size (seconds)")]
+        public int SelectedBinSize { get; set; }
+        
+        [Display(Name = "Show Average Split")]
+        public bool ShowAverageSplit { get; set; }
+        [Display(Name = "Show Programmed Split")]
+        public bool ShowProgrammedSplit { get; set; }
     }
 }
