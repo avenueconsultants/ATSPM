@@ -130,6 +130,9 @@ namespace SPM.Controllers
                 case 12: default:
                     SplitFailOptions splitFailOptions = new SplitFailOptions();
                     return PartialView("SplitFailOptions", splitFailOptions);
+                case 36:
+                    GreenTimeUtilizationOptions greenTimeUtilizationOptions = new GreenTimeUtilizationOptions();
+                    return PartialView("GreenTimeUtilizationOptions", greenTimeUtilizationOptions);
             }
         }
 
