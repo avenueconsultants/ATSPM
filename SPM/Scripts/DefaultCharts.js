@@ -137,6 +137,12 @@ function SetSplitFailMetric(firstSecondsOfRed, showFailLines, showAverageLines, 
 }
 
 
+function SetGreenTimeUtilizationMetric(consecutiveCount, showPlans, showPed) {
+    $("#SelectedBinSize").val(selectedBinSize);
+    $("#ShowAverageSplit").prop('checked', showAverageSplit);
+    $("#ShowProgrammedSplit").prop('checked', showProgrammedSplit);
+}
+
 function SetBaseOptions() {
     $("#SignalID").val(7062);
     $("#StartDateDay").val('10/17/2017');
