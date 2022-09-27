@@ -37,6 +37,7 @@ namespace MOEWcfServiceLibrary
     [ServiceKnownType(typeof(MOE.Common.Business.WCFServiceLibrary.TimingAndActuationsOptions))]
     [ServiceKnownType(typeof(MOE.Common.Business.WCFServiceLibrary.PhaseLeftTurnGapAggregationOptions))]
     [ServiceKnownType(typeof(MOE.Common.Business.WCFServiceLibrary.PhaseSplitMonitorAggregationOptions))]
+    [ServiceKnownType(typeof(MOE.Common.Business.WCFServiceLibrary.GreenTimeUtilizationOptions))]
 
 
     public interface IMetricGenerator
