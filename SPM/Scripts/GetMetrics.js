@@ -259,6 +259,15 @@ function GetWaitTimeMetric(metricTypeID) {
     GetMetric(urlpathWaitTime, toSend);
 }
 
+function GetGreenTimeUtilizationMetric(metricTypeID) {
+    var tosend = GetCommonValues();
+    tosend.MetricTypeID = metricTypeID;
+    tosend.SelectedBinSize = $("#SelectedBinSize").val();
+    tosend.ShowAverageSplit = $("#ShowAverageSplit").is(":checked");
+    tosend.ShowProgrammedSplit = $("#ShowProgrammedSplit").is(":checked");
+    GetMetric(urlpathGreenTimeUtilization, tosend);
+}
+
 $('#CreateMetric').click(function() { CreateMetric(); });
 
 function CreateMetric() {
@@ -311,6 +320,9 @@ function CreateMetric() {
         }
         else if (selectedMetricID === "17") {
             GetTimingAndActuationsMetric(17);
+        }
+        else if (selectedMetricID === "36") {
+            GetGreenTimeUtilizationMetric(36);
         }
     }
     defer.resolve();
