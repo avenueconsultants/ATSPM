@@ -350,6 +350,17 @@ namespace SPM.Controllers
             return View("Index", defaultChartsViewModel);
         }
 
+        public ActionResult GetGreenTimeUtilizationMetricByUrl(GreenTimeUtilizationOptions metricOptions)
+        {
+            DefaultChartsViewModel defaultChartsViewModel = new DefaultChartsViewModel();
+            defaultChartsViewModel.RunMetricJavascript = GetCommonJavascriptProperties(metricOptions);
+            defaultChartsViewModel.RunMetricJavascript += "GetMetricsList('" + metricOptions.SignalID + "', 1); " +
+                                                          "SetPhaseTerminationMetric(" + metricOptions.SelectedBinSize.ToString() + "," +
+                                                          metricOptions.ShowAverageSplit.ToString().ToLower() + "," +
+                                                          metricOptions.ShowProgrammedSplit.ToString().ToLower() +
+                                                          "); CreateMetric();";
+            return View("Index", defaultChartsViewModel);
+        }
 
         private string GetCommonJavascriptProperties(MetricOptions metricOptions)
         {
