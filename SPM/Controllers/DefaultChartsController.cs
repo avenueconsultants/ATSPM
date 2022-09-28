@@ -354,8 +354,8 @@ namespace SPM.Controllers
         {
             DefaultChartsViewModel defaultChartsViewModel = new DefaultChartsViewModel();
             defaultChartsViewModel.RunMetricJavascript = GetCommonJavascriptProperties(metricOptions);
-            defaultChartsViewModel.RunMetricJavascript += "GetMetricsList('" + metricOptions.SignalID + "', 1); " +
-                                                          "SetPhaseTerminationMetric(" + metricOptions.SelectedBinSize.ToString() + "," +
+            defaultChartsViewModel.RunMetricJavascript += "GetMetricsList('" + metricOptions.SignalID + "', 36); " +
+                                                          "SetGreenTimeUtilizationMetric(" + metricOptions.SelectedBinSize.ToString() + "," +
                                                           metricOptions.ShowAverageSplit.ToString().ToLower() + "," +
                                                           metricOptions.ShowProgrammedSplit.ToString().ToLower() +
                                                           "); CreateMetric();";
@@ -1009,6 +1009,47 @@ namespace SPM.Controllers
 
             return PartialView("MetricResult", result);
         }
+
+        public ActionResult GetcMetric(GreenTimeUtilizationOptions metricOptions)
+        {
+            metricOptions.MetricType = GetMetricType(metricOptions.MetricTypeID);
+            Models.MetricResultViewModel result = new Models.MetricResultViewModel();
+            if (ModelState.IsValid)
+            {
+                MetricGeneratorService.MetricGeneratorClient client =
+                        new MetricGeneratorService.MetricGeneratorClient();
+                try
+                {
+                    client.Open();
+                    result.ChartPaths = client.CreateMetric(metricOptions);
+                    client.Close();
+                }
+                catch (Exception ex)
+                {
+                    client.Close();
+                    return Content("<h1>" + ex.Message + "</h1>");
+                }
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("/DefaultCharts/GetGreenTimeUtilizationMetricByUrl?");
+            sb.Append("&SelectedConsecutiveCount=" + metricOptions.SelectedBinSize.ToString());
+            sb.Append("&ShowPlanStripes=" + metricOptions.ShowAverageSplit.ToString().ToLower());
+            sb.Append("&ShowPedActivity=" + metricOptions.ShowProgrammedSplit.ToString().ToLower());
+            sb.Append("&SignalID=" + metricOptions.SignalID);
+            string _startDate = metricOptions.StartDate.ToString().Trim();
+            _startDate = _startDate.Replace(" ", "%20");
+            string _endDate = metricOptions.EndDate.ToString().Trim();
+            _endDate = _endDate.Replace(" ", "%20");
+            sb.Append("&StartDate=" + _startDate);
+            sb.Append("&EndDate=" + _endDate);
+            string fullUri = Request.Url.AbsoluteUri;
+            int placeCounter = fullUri.IndexOf("/DefaultCharts/");
+            string hostname = fullUri.Substring(0, placeCounter);
+            result.ShowMetricUrlJavascript = "window.history.pushState(\"none\", \"none\", \"" + hostname.Trim() + sb + "\");";
+            return PartialView("MetricResult", result);
+        }
+
 
         public ActionResult GetPCDMetric(PCDOptions metricOptions)
         {
