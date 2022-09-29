@@ -64,6 +64,9 @@ namespace SPM.Controllers
             viewModel.YellowAndRed = new YellowAndRedDefaultValuesViewModel();
             AddValuesToViewModel(viewModel.YellowAndRed, "YellowAndRed");
 
+            viewModel.GreenTimeUtilization = new GreenTimeUtilizationDefaultValuesViewModel();
+            AddValuesToViewModel(viewModel.GreenTimeUtilization, "GreenTimeUtilization");
+
             AddDropDownValuesToViewBag();
 
             return View(viewModel);
@@ -91,6 +94,7 @@ namespace SPM.Controllers
             UpdateChartDefaults("AoR", viewModel.AoR);
             UpdateChartDefaults("TMC", viewModel.TMC);
             UpdateChartDefaults("PCD", viewModel.PCD);
+            UpdateChartDefaults("GreenTimeUtilization", viewModel.GreenTimeUtilization);
 
             return RedirectToAction("Index");
         }

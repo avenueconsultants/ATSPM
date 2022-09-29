@@ -958,6 +958,7 @@
     <Content Include="Views\Areas\Edit.cshtml" />
     <Content Include="Views\Areas\Index.cshtml" />
     <Content Include="Views\MeasuresDefaults\GreenTimeUtilizationOptions.cshtml" />
+    <Content Include="Views\DefaultCharts\GreenTimeUtilizationOptions.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
