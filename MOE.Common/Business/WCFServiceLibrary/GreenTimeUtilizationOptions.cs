@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web.UI.DataVisualization.Charting;
+using MOE.Common.Business.GreenTimeUtilization;
+using MOE.Common.Models;
 using MOE.Common.Models.Repositories;
 
 namespace MOE.Common.Business.WCFServiceLibrary
@@ -31,6 +33,7 @@ namespace MOE.Common.Business.WCFServiceLibrary
             GreenTimeBinSizeList = new List<int>() { 2, 3, 5 };
             ShowAverageSplit = true;
             ShowProgrammedSplit = true;
+
             SetDefaults();
         }
 
@@ -54,30 +57,38 @@ namespace MOE.Common.Business.WCFServiceLibrary
         public override List<string> CreateMetric()
         {
             base.CreateMetric();
+            var returnString = new List<string>();
             var signalRepository = SignalsRepositoryFactory.Create();
-            Signal = signalRepository.GetVersionOfSignalByDate(SignalID, StartDate);
-            int MetricTypeID = 36; //measure ID number
-            var chart = new Chart();
-            var metricApproaches = Signal.GetApproachesForSignalThatSupportMetric(MetricTypeID);
+            var signal = signalRepository.GetVersionOfSignalByDate(SignalID, StartDate);
+            //int MetricTypeID = 36; //measure ID number
+            //var chart = new Chart();
+            var metricApproaches = signal.GetApproachesForSignalThatSupportMetric(MetricTypeID);
             if (metricApproaches.Count > 0)
-                foreach (var approach in metricApproaches)
+            {
+                List<GreenTimeUtilizationPhase> greenTimeUtilizationPhases = new List<GreenTimeUtilizationPhase>();
+                foreach (Approach approach in metricApproaches)
                 {
-                    var signalPhase = new SignalPhase(StartDate, EndDate, approach, true, SelectedBinSize,
-                        MetricTypeID, false);
-                    chart = GetNewChart();
-                    chart.ChartAreas[0].AxisX.Minimum = signalPhase.Cycles.Any()? signalPhase.Cycles.First().StartTime.ToOADate():StartDate.ToOADate();
-                    chart.ChartAreas[0].AxisX.Maximum = signalPhase.Cycles.Any() ? signalPhase.Cycles.Last().EndTime.ToOADate():EndDate.ToOADate();
-                    var chartName = CreateFileName();
-                    chart.ImageLocation = MetricFileLocation + chartName;
-                    chart.SaveImage(MetricFileLocation + chartName, ChartImageFormat.Jpeg);
-                    ReturnList.Add(MetricWebPath + chartName);
+                    greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this));
+                    var chart = 2;
+                    //chart = GetNewChart();
+                    //var chartName = CreateFileName();
+                    //chart.ImageLocation = MetricFileLocation + chartName;
+                    //chart.SaveImage(MetricFileLocation + chartName, ChartImageFormat.Jpeg);
+                    //ReturnList.Add(MetricWebPath + chartName);
                 }
+                greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PlanSort).ToList();
+                greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PhaseSort).ToList();
+                foreach (var greenTimeUtilizationPhase in greenTimeUtilizationPhases)
+                {
+                    GetChart(greenTimeUtilizationPhase, returnString);
+                }
+            }
 
             return ReturnList;
         }
 
 
-        Chart GetNewChart()
+        Chart GetChart(GreenTimeUtilizationPhase greenTimeUtilizationPhase, List<string> returnString)
             {
                 var chart = ChartFactory.CreateDefaultChartNoX2Axis(this);
                 chart.ChartAreas[0].AxisY2.Title = "Volume Per Hour";

@@ -14,6 +14,16 @@ namespace MOE.Common.Business.GreenTimeUtilization
         public const int PHASE_BEGIN_YELLOW = 8;
         public const int DETECTOR_ON = 82;
 
+        //define sorting variables
+        public int PlanSort { get; set; }
+        public string PhaseSort { get; set; }
+
+        //define lists to be used
+        List<double> binAvgList { get; } = new List<double>(new double[99]);
+        List<int> binValueList { get; } = new List<int>(new int[99]);
+        List<int> binMinList { get; } = new List<int>(new int[99]);
+        List<int> binMaxList { get; } = new List<int>(new int[99]);
+
         //get the approach???
         public Approach Approach { get; }
 
@@ -21,8 +31,11 @@ namespace MOE.Common.Business.GreenTimeUtilization
         {
             Approach = approach;
             //get list of split pattern plans
-            var Plans = PlanFactory.GetSplitMonitorPlans(StartDate, EndDate, SignalID);
-
+            var Plans = PlanFactory.GetSplitMonitorPlans(options.StartDate, options.EndDate, options.SignalID);
+            PlanSort = 0;
+            PhaseSort = approach.ProtectedPhaseNumber + "-1";
+            //PhaseNumberSort = getPermissivePhase ? approach.PermissivePhaseNumber.Value.ToString() + "-1" : approach.ProtectedPhaseNumber.ToString() + "-2";   <-- from Split fail, might be useful if we use getPermissivePhase bool        
+            
             foreach (var plan in Plans)
             {
                 var cycleCount = 0;
@@ -31,22 +44,17 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 var startTime = plan.StartTime;
                 var endTime = plan.EndTime;
                 var planName = plan.PlanNumber;
-
-                //define lists to be used
-                List<int> binMinList = new List<int>(new int[99]);
-                List<int> binMaxList = new List<int>(new int[99]);
-                List<int> binValueList = new List<int>(new int[99]);
-                List<int> binAvgList = new List<int>(new int[99]);
+                PlanSort++;
 
                 //get a list of cycle events
                 SPM db = new SPM();
                 var cel = ControllerEventLogRepositoryFactory.Create(db);
                 var phaseEventNumbers = new List<int> { PHASE_BEGIN_GREEN, PHASE_BEGIN_YELLOW };
-                var phaseEvents = cel.GetEventsByEventCodesParam(SignalID, startTime, endTime, phaseEventNumbers, approach.ProtectedPhaseNumber);
+                var phaseEvents = cel.GetEventsByEventCodesParam(options.SignalID, startTime, endTime, phaseEventNumbers, approach.ProtectedPhaseNumber);
                 
                 //get a list of detections for that phase
-                var detectorsToUse = approach.GetAllDetectorsOfDetectionType(2);
-                var allDetectionEvents = cel.GetSignalEventsByEventCode(SignalID, startTime, endTime, DETECTOR_ON);
+                var detectorsToUse = approach.GetAllDetectorsOfDetectionType(4);
+                var allDetectionEvents = cel.GetSignalEventsByEventCode(options.SignalID, startTime, endTime, DETECTOR_ON);
                 var detectionEvents = new List<Controller_Event_Log>();
                 foreach (var detector in detectorsToUse)
                 {
@@ -80,29 +88,36 @@ namespace MOE.Common.Business.GreenTimeUtilization
                         continue;
 
                     //create the cycle-only list
-                    List<int> cycleBinValueList = new List<int>(new int[100]);
+                    List<int> cycleBinValueList = new List<int>(new int[99]);
 
                     //add 1 to the bin value for each detection occuring during green
                     foreach (var detection in greenDetectionsList)
                     {
                         TimeSpan timeSinceGreenStart = detection.Timestamp - green.Timestamp;
-                        var binnumber = (int)(timeSinceGreenStart.TotalSeconds / SelectedBinSize);
+                        var binnumber = (int)(timeSinceGreenStart.TotalSeconds / options.SelectedBinSize);
                         binValueList[binnumber] = binValueList[binnumber] + 1;
                         cycleBinValueList[binnumber]++;
                     }
 
                     //assign new plan min counts and max counts as needed
-                    foreach (var entry in cycleBinValueList)
+                    //foreach (var entry in cycleBinValueList)
+                    for (int i = 0; i < 99; i++)
                     {
-                        if (cycleBinValueList[entry] < binMinList[entry])
-                            binMinList[entry] = cycleBinValueList[entry];
+                        if (cycleBinValueList[i] < binMinList[i])
+                            binMinList[i] = cycleBinValueList[i];
 
-                        if (cycleBinValueList[entry] > binMaxList[entry])
-                            binMaxList[entry] = cycleBinValueList[entry];
+                        if (cycleBinValueList[i] > binMaxList[i])
+                            binMaxList[i] = cycleBinValueList[i];
                     }
                 //end of cycle loop; move on to next cycle
                 }
 
+                //foreach (var entry in binAvgList)
+                for (int i = 0; i < 99; i++)
+                {
+                    binAvgList[i] = (double)binValueList[i]/cycleCount;
+                }
+                
 
             //end of plan loop; move on to next plan
             }
