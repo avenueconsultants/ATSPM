@@ -54,7 +54,16 @@ namespace MOE.Common.Business.WCFServiceLibrary
 
         public Models.Signal Signal { get; set; }
 
-        public override List<string> CreateMetric()
+        //define sorting variables
+        public int PlanSort { get; set; }
+        public string PhaseSort { get; set; }
+
+        //get plan starttime, endtime, and number
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int PlanName { get; set; }
+
+public override List<string> CreateMetric()
         {
             base.CreateMetric();
             var returnString = new List<string>();
@@ -65,17 +74,30 @@ namespace MOE.Common.Business.WCFServiceLibrary
             var metricApproaches = signal.GetApproachesForSignalThatSupportMetric(MetricTypeID);
             if (metricApproaches.Count > 0)
             {
+                var Plans = PlanFactory.GetSplitMonitorPlans(StartDate, EndDate, SignalID);
                 List<GreenTimeUtilizationPhase> greenTimeUtilizationPhases = new List<GreenTimeUtilizationPhase>();
-                foreach (Approach approach in metricApproaches)
-                {
-                    greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this));
-                    var chart = 2;
-                    //chart = GetNewChart();
-                    //var chartName = CreateFileName();
-                    //chart.ImageLocation = MetricFileLocation + chartName;
-                    //chart.SaveImage(MetricFileLocation + chartName, ChartImageFormat.Jpeg);
-                    //ReturnList.Add(MetricWebPath + chartName);
-                }
+                
+                    foreach (Approach approach in metricApproaches)
+                    {
+                    PhaseSort = approach.ProtectedPhaseNumber + "-1";
+                    //PhaseNumberSort = getPermissivePhase ? approach.PermissivePhaseNumber.Value.ToString() + "-1" : approach.ProtectedPhaseNumber.ToString() + "-2";   <-- from Split fail, might be useful if we use getPermissivePhase bool        
+                    PlanSort = 0;
+                    foreach (Plan plan in Plans)
+                        {
+                            StartTime = plan.StartTime;
+                            EndTime = plan.EndTime;
+                            PlanName = plan.PlanNumber;
+                            PlanSort++;
+                            greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this, plan));
+                            var chart = 2;
+                            //chart = GetNewChart();
+                            //var chartName = CreateFileName();
+                            //chart.ImageLocation = MetricFileLocation + chartName;
+                            //chart.SaveImage(MetricFileLocation + chartName, ChartImageFormat.Jpeg);
+                            //ReturnList.Add(MetricWebPath + chartName);
+                        }
+                    }
+                
                 greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PlanSort).ToList();
                 greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PhaseSort).ToList();
                 foreach (var greenTimeUtilizationPhase in greenTimeUtilizationPhases)
