@@ -47,6 +47,7 @@ namespace MOE.Common.Business.WCFServiceLibrary
     [KnownType(typeof(PhaseLeftTurnGapAggregationOptions))]
     [KnownType(typeof(PhaseSplitMonitorAggregationOptions))]
     [KnownType(typeof(string[]))]
+    [KnownType(typeof(GreenTimeUtilizationOptions))]
     public class MetricOptions
     {
         MOE.Common.Models.Repositories.IMeasuresDefaultsRepository measuresDefaultsRepository =
