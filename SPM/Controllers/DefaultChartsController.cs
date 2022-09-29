@@ -1010,7 +1010,7 @@ namespace SPM.Controllers
             return PartialView("MetricResult", result);
         }
 
-        public ActionResult GetcMetric(GreenTimeUtilizationOptions metricOptions)
+        public ActionResult GetGreenTimeUtilizationMetric(GreenTimeUtilizationOptions metricOptions)
         {
             metricOptions.MetricType = GetMetricType(metricOptions.MetricTypeID);
             Models.MetricResultViewModel result = new Models.MetricResultViewModel();

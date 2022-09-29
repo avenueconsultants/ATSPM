@@ -56,7 +56,7 @@ namespace MOE.Common.Business.WCFServiceLibrary
             base.CreateMetric();
             var signalRepository = SignalsRepositoryFactory.Create();
             Signal = signalRepository.GetVersionOfSignalByDate(SignalID, StartDate);
-            int MetricTypeID = 4; //detection type: lane by lane count
+            int MetricTypeID = 36; //measure ID number
             var chart = new Chart();
             var metricApproaches = Signal.GetApproachesForSignalThatSupportMetric(MetricTypeID);
             if (metricApproaches.Count > 0)
