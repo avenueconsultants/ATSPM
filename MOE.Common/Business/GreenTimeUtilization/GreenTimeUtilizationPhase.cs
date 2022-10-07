@@ -56,6 +56,12 @@ namespace MOE.Common.Business.GreenTimeUtilization
             ProgrammedGreenDuration = splitLength - durYellowRed;
             int cycleCount = 0;
 
+            //populate BinMinList with high values
+            for (int i = 0; i < 99; i++)
+            {
+                BinMinList[i] = 999;
+            }
+
             //get a list of cycle events
             SPM db = new SPM();
             var cel = ControllerEventLogRepositoryFactory.Create(db);
@@ -135,7 +141,6 @@ namespace MOE.Common.Business.GreenTimeUtilization
 
             //get average green duration
             AvgGreenDuration = GreenDurationList.Average();
-
 
         //end of function; phase-plan finished
         }
