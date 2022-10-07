@@ -8,6 +8,7 @@ using System.Web.UI.DataVisualization.Charting;
 using MOE.Common.Business.GreenTimeUtilization;
 using MOE.Common.Models;
 using MOE.Common.Models.Repositories;
+using Newtonsoft.Json;
 
 namespace MOE.Common.Business.WCFServiceLibrary
 {
@@ -55,13 +56,19 @@ namespace MOE.Common.Business.WCFServiceLibrary
         public Models.Signal Signal { get; set; }
 
         //define sorting variables
-        public int PlanSort { get; set; }
-        public string PhaseSort { get; set; }
+        //public int PlanSort { get; set; }
+        //public string PhaseSort { get; set; }
 
         //get plan starttime, endtime, and number
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public int PlanName { get; set; }
+        //public DateTime StartTime { get; set; }
+        //public DateTime EndTime { get; set; }
+        //public int PlanName { get; set; }
+
+        //other variables
+        //public int splitLengthEventCode { get; set; }
+        //public int SplitLength { get; set; }
+
+        public string JsonText { get; set; }
 
 public override List<string> CreateMetric()
         {
@@ -76,38 +83,42 @@ public override List<string> CreateMetric()
             {
                 var Plans = PlanFactory.GetSplitMonitorPlans(StartDate, EndDate, SignalID);
                 List<GreenTimeUtilizationPhase> greenTimeUtilizationPhases = new List<GreenTimeUtilizationPhase>();
-                
-                    foreach (Approach approach in metricApproaches)
-                    {
-                    PhaseSort = approach.ProtectedPhaseNumber + "-1";
-                    //PhaseNumberSort = getPermissivePhase ? approach.PermissivePhaseNumber.Value.ToString() + "-1" : approach.ProtectedPhaseNumber.ToString() + "-2";   <-- from Split fail, might be useful if we use getPermissivePhase bool        
-                    PlanSort = 0;
+                int planSort; 
+                foreach (Approach approach in metricApproaches)
+                {
+                    planSort = 0;
                     foreach (Plan plan in Plans)
-                        {
-                            StartTime = plan.StartTime;
-                            EndTime = plan.EndTime;
-                            PlanName = plan.PlanNumber;
-                            PlanSort++;
-                            greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this, plan));
-                            var chart = 2;
-                            //chart = GetNewChart();
-                            //var chartName = CreateFileName();
-                            //chart.ImageLocation = MetricFileLocation + chartName;
-                            //chart.SaveImage(MetricFileLocation + chartName, ChartImageFormat.Jpeg);
-                            //ReturnList.Add(MetricWebPath + chartName);
-                        }
+                    {
+                        planSort++;
+
+                        greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this, plan, planSort));
+                        var chart = 2;
+                        //chart = GetNewChart();
+                        //var chartName = CreateFileName();
+                        //chart.ImageLocation = MetricFileLocation + chartName;
+                        //chart.SaveImage(MetricFileLocation + chartName, ChartImageFormat.Jpeg);
+                        //ReturnList.Add(MetricWebPath + chartName);
                     }
+                }
                 
-                greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PlanSort).ToList();
-                greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PhaseSort).ToList();
+                greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PlanSort).ThenBy(s => s.PhaseSort).ToList();
                 foreach (var greenTimeUtilizationPhase in greenTimeUtilizationPhases)
                 {
-                    GetChart(greenTimeUtilizationPhase, returnString);
+                    //JsonSerializer.Serialize(greenTimeUtilizationPhase);
+                    JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhase);
+                    System.Diagnostics.Debug.WriteLine(JsonText);
+                    JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhase.BinAvgList);
+                    System.Diagnostics.Debug.WriteLine(JsonText);
+                    ReturnList.Add(JsonText);
+                    //GetChart(greenTimeUtilizationPhase, returnString);
                 }
             }
 
+            //return ReturnList;
             return ReturnList;
         }
+
+       
 
 
         Chart GetChart(GreenTimeUtilizationPhase greenTimeUtilizationPhase, List<string> returnString)
