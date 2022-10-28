@@ -21,7 +21,6 @@ namespace MOE.Common.Business.GreenTimeUtilization
         [DataMember]
         public List<double> BinAvgList { get; } = new List<double>(new double[99]);
         public List<int> BinValueList { get; } = new List<int>(new int[99]);
-        public List<int> BinMinList { get; } = new List<int>(new int[99]);
         [DataMember]
         public List<int> BinMaxList { get; } = new List<int>(new int[99]);
         public List<double> GreenDurationList { get; } = new List<double>();
@@ -68,12 +67,6 @@ namespace MOE.Common.Business.GreenTimeUtilization
             GetYellowRedTime(approach, options);
             ProgrammedGreenDuration = splitLength - durYellowRed;
             int cycleCount = 0;
-
-            //populate BinMinList with high values
-            for (int i = 0; i < 99; i++)
-            {
-                BinMinList[i] = 999;
-            }
 
             //get a list of cycle events
             SPM db = new SPM();
@@ -137,9 +130,6 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 //foreach (var entry in cycleBinValueList)
                 for (int i = 0; i < 99; i++)
                 {
-                    if (cycleBinValueList[i] < BinMinList[i])
-                        BinMinList[i] = cycleBinValueList[i];
-
                     if (cycleBinValueList[i] > BinMaxList[i])
                         BinMaxList[i] = cycleBinValueList[i];
                 }
