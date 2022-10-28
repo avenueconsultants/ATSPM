@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using MOE.Common.Business.WCFServiceLibrary;
 using MOE.Common.Models;
 using MOE.Common.Models.Repositories;
 
 namespace MOE.Common.Business.GreenTimeUtilization
 {
+    [DataContract]
     public class GreenTimeUtilizationPhase : GreenTimeUtilizationOptions
     {
         //define ECs
@@ -16,22 +18,33 @@ namespace MOE.Common.Business.GreenTimeUtilization
         public const int DETECTOR_ON = 82;
 
         //define lists to be used
+        [DataMember]
         public List<double> BinAvgList { get; } = new List<double>(new double[99]);
         public List<int> BinValueList { get; } = new List<int>(new int[99]);
         public List<int> BinMinList { get; } = new List<int>(new int[99]);
+        [DataMember]
         public List<int> BinMaxList { get; } = new List<int>(new int[99]);
         public List<double> GreenDurationList { get; } = new List<double>();
 
         //define other variables to be transferred
+        [DataMember]
         public double AvgGreenDuration { get; set; }
+        [DataMember]
         public double ProgrammedGreenDuration { get; set;}
         public Approach Approach { get; }  //?? not sure if I need this one
+        [DataMember]
         public DateTime StartTime { get; set; }
+        [DataMember]
         public DateTime EndTime { get; set; }
+        [DataMember]
         public int PlanName { get; set; }
+
         public int PlanSort { get; set; }
+        [DataMember]
         public int PhaseNumber { get; set; }
-        public string PhaseSort { get; set; }    
+
+        public string PhaseSort { get; set; }
+        [DataMember]
         public string SignalID { get; set; }
 
         //define private variables

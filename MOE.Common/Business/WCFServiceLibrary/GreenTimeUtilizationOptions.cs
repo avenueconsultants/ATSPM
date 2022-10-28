@@ -107,8 +107,8 @@ public override List<string> CreateMetric()
                     //JsonSerializer.Serialize(greenTimeUtilizationPhase);
                     JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhase);
                     System.Diagnostics.Debug.WriteLine(JsonText);
-                    JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhase.BinAvgList);
-                    System.Diagnostics.Debug.WriteLine(JsonText);
+                    //JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhase.BinAvgList);
+                    //System.Diagnostics.Debug.WriteLine(JsonText);
                     ReturnList.Add(JsonText);
                     //GetChart(greenTimeUtilizationPhase, returnString);
                 }
