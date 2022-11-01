@@ -290,7 +290,8 @@ namespace SPM.Models
     {
         [Display(Name = "Bin Size (seconds)")]
         public int SelectedBinSize { get; set; }
-        
+        [Display(Name = "Time of Day Aggregation (minutes)")]
+        public int SelectedAggSize { get; set; }
         [Display(Name = "Show Average Split")]
         public bool ShowAverageSplit { get; set; }
         [Display(Name = "Show Programmed Split")]

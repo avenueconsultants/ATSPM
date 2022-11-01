@@ -137,8 +137,9 @@ function SetSplitFailMetric(firstSecondsOfRed, showFailLines, showAverageLines, 
 }
 
 
-function SetGreenTimeUtilizationMetric(selectedBinSize, showAverageSplit, showProgrammedSplit) {
+function SetGreenTimeUtilizationMetric(selectedBinSize, selectedAggSize, showAverageSplit, showProgrammedSplit) {
     $("#SelectedBinSize").val(selectedBinSize);
+    $("#SelectedAggSize").val(selectedAggSize);
     $("#ShowAverageSplit").prop('checked', showAverageSplit);
     $("#ShowProgrammedSplit").prop('checked', showProgrammedSplit);
 }

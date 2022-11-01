@@ -263,6 +263,7 @@ function GetGreenTimeUtilizationMetric(metricTypeID) {
     var tosend = GetCommonValues();
     tosend.MetricTypeID = metricTypeID;
     tosend.SelectedBinSize = $("#SelectedBinSize").val();
+    tosend.SelectedAggSize = $("#SelectedAggSize").val();
     tosend.ShowAverageSplit = $("#ShowAverageSplit").is(":checked");
     tosend.ShowProgrammedSplit = $("#ShowProgrammedSplit").is(":checked");
     GetMetric(urlpathGreenTimeUtilization, tosend);

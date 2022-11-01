@@ -18,11 +18,12 @@ namespace MOE.Common.Business.WCFServiceLibrary
 
 
         public GreenTimeUtilizationOptions(string signalID, DateTime startDate, DateTime endDate, 
-            int binSize, bool showAverageSplit, bool showProgrammedSplit)
+            int binSize, int aggSize, bool showAverageSplit, bool showProgrammedSplit)
         {
 
             SignalID = signalID;
             SelectedBinSize = binSize;
+            SelectedAggSize = aggSize;
             ShowAverageSplit = showAverageSplit;
             ShowProgrammedSplit = showProgrammedSplit;
             StartDate = startDate;
@@ -31,19 +32,17 @@ namespace MOE.Common.Business.WCFServiceLibrary
 
         public GreenTimeUtilizationOptions()
         {
-            GreenTimeBinSizeList = new List<int>() { 2, 3, 5 };
-            ShowAverageSplit = true;
-            ShowProgrammedSplit = true;
-
             SetDefaults();
         }
 
         [Required]
-        [Display(Name = "Green Time Bin Size")]
+        [Display(Name = "Green Time Bin Size (seconds; range is 2 to 10)")]
         [DataMember]
         public int SelectedBinSize { get; set; }
 
-        public List<int> GreenTimeBinSizeList { get; set; }
+        [Display(Name = "Time of Day Aggregation (minutes; range is 5 to 30)")]
+        [DataMember]
+        public int SelectedAggSize { get; set; }
 
         [DataMember]
         [Display(Name = "Show Average Split")]

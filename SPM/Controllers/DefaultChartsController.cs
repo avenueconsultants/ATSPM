@@ -356,6 +356,7 @@ namespace SPM.Controllers
             defaultChartsViewModel.RunMetricJavascript = GetCommonJavascriptProperties(metricOptions);
             defaultChartsViewModel.RunMetricJavascript += "GetMetricsList('" + metricOptions.SignalID + "', 36); " +
                                                           "SetGreenTimeUtilizationMetric(" + metricOptions.SelectedBinSize.ToString() + "," +
+                                                          metricOptions.SelectedAggSize.ToString() + "," +
                                                           metricOptions.ShowAverageSplit.ToString().ToLower() + "," +
                                                           metricOptions.ShowProgrammedSplit.ToString().ToLower() +
                                                           "); CreateMetric();";

@@ -4,9 +4,13 @@
     <div class="card-body">
         <div class="">
             @Html.LabelFor(model => model.SelectedBinSize, new { htmlAttributes = new { @class = "control-label" } })
-            @Html.DropDownListFor(model => model.SelectedBinSize,
-            new SelectList(Model.GreenTimeBinSizeList, 15), new { @id = "SelectedBinSize", @class = "form-control col-md-6" })
+            @Html.EditorFor(model => model.SelectedBinSize, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.SelectedBinSize, "", new { id = "SelectedBinSize-error", @class = "text-danger" })
+        </div>
+        <div class="">
+            @Html.LabelFor(model => model.SelectedAggSize, new { htmlAttributes = new { @class = "control-label" } })
+            @Html.EditorFor(model => model.SelectedAggSize, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SelectedAggSize, "", new { id = "SelectedAggSize-error", @class = "text-danger" })
         </div>
         <div class="">
             @Html.EditorFor(model => model.ShowAverageSplit, new { htmlAttributes = new { @class = "" } })
@@ -16,6 +20,6 @@
             @Html.EditorFor(model => model.ShowProgrammedSplit, new { htmlAttributes = new { @class = "" } })
             @Html.LabelFor(model => model.ShowProgrammedSplit, new { htmlAttributes = new { @class = "control-label" } })
         </div>
-        </div>
+    </div>
     </div>
 
