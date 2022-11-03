@@ -82,22 +82,16 @@ public override List<string> CreateMetric()
             {
                 var Plans = PlanFactory.GetSplitMonitorPlans(StartDate, EndDate, SignalID);
                 List<GreenTimeUtilizationPhase> greenTimeUtilizationPhases = new List<GreenTimeUtilizationPhase>();
-                int planSort; 
                 foreach (Approach approach in metricApproaches)
                 {
-                    planSort = 0;
-                    foreach (Plan plan in Plans)
-                    {
-                        planSort++;
+                    //GetEventCodeForPhase(approach.ProtectedPhaseNumber);    //might not be protected phase number when doing a permissive phase, but this will do for now
+                    //new List<PhaseSplits>
+                    //foreach (Plan plan in Plans) {
 
-                        greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this, plan, planSort));
-                        var chart = 2;
-                        //chart = GetNewChart();
-                        //var chartName = CreateFileName();
-                        //chart.ImageLocation = MetricFileLocation + chartName;
-                        //chart.SaveImage(MetricFileLocation + chartName, ChartImageFormat.Jpeg);
-                        //ReturnList.Add(MetricWebPath + chartName);
-                    }
+                    //}
+                    //add something about sending over plan information for the phase here
+                    greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this, Plans));  //splits TBD
+                    var chart = 2;
                 }
                 
                 greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PlanSort).ThenBy(s => s.PhaseSort).ToList();
@@ -236,5 +230,88 @@ public override List<string> CreateMetric()
                     backGroundColor++;
                 }
             }
+
+        void GetEventCodeForPhase(int PhaseNumber)  // i think this might be better suited moved over to the options file now. so splits for a phase can be sent into this file
+        {
+            switch (PhaseNumber)
+            {
+                case 1:
+                    splitLengthEventCode = 134;
+                    break;
+                case 2:
+                    splitLengthEventCode = 135;
+                    break;
+                case 3:
+                    splitLengthEventCode = 136;
+                    break;
+                case 4:
+                    splitLengthEventCode = 137;
+                    break;
+                case 5:
+                    splitLengthEventCode = 138;
+                    break;
+                case 6:
+                    splitLengthEventCode = 139;
+                    break;
+                case 7:
+                    splitLengthEventCode = 140;
+                    break;
+                case 8:
+                    splitLengthEventCode = 141;
+                    break;
+                case 17:
+                    splitLengthEventCode = 203;
+                    break;
+                case 18:
+                    splitLengthEventCode = 204;
+                    break;
+                case 19:
+                    splitLengthEventCode = 205;
+                    break;
+                case 20:
+                    splitLengthEventCode = 206;
+                    break;
+                case 21:
+                    splitLengthEventCode = 207;
+                    break;
+                case 22:
+                    splitLengthEventCode = 208;
+                    break;
+                case 23:
+                    splitLengthEventCode = 209;
+                    break;
+                case 24:
+                    splitLengthEventCode = 210;
+                    break;
+                case 25:
+                    splitLengthEventCode = 211;
+                    break;
+                case 26:
+                    splitLengthEventCode = 212;
+                    break;
+                case 27:
+                    splitLengthEventCode = 213;
+                    break;
+                case 28:
+                    splitLengthEventCode = 214;
+                    break;
+                case 29:
+                    splitLengthEventCode = 215;
+                    break;
+                case 30:
+                    splitLengthEventCode = 216;
+                    break;
+                case 31:
+                    splitLengthEventCode = 217;
+                    break;
+                case 32:
+                    splitLengthEventCode = 218;
+                    break;
+                default:
+                    splitLengthEventCode = 219;
+                    break;
+            }
         }
+
     }
+}
