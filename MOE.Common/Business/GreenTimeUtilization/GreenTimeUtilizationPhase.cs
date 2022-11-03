@@ -59,6 +59,11 @@ namespace MOE.Common.Business.GreenTimeUtilization
 
         public GreenTimeUtilizationPhase(Approach approach, GreenTimeUtilizationOptions options, List<PlanSplitMonitor> Plans) // the plans/splits input is still TBD
         {
+            //define lists
+            List<BarStack> Stacks = new List<BarStack>();
+            List<AverageSplit> AvgSplits = new List<AverageSplit>();
+            List<ProgrammedSplit> ProgSplits = new List<ProgrammedSplit>();
+
             //get a list of cycle events
             SPM db = new SPM();
             var cel = ControllerEventLogRepositoryFactory.Create(db);
@@ -139,21 +144,13 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 }
 
                 //create new classes
-                new BarStack(StartAggTime, BinValueList, cycleCount, options.SelectedBinSize);
-                new AverageSplit(StartAggTime, greenDurationList);
+                Stacks.Add(new BarStack(StartAggTime, BinValueList, cycleCount, options.SelectedBinSize));
+                AvgSplits.Add(new AverageSplit(StartAggTime, greenDurationList));
             }
 
             new ProgrammedSplit(options.StartDate, options.EndDate, PhaseNumber);
 
 
-
-
-            
-
-            
-
-            //get average green duration
-            AvgGreenDuration = GreenDurationList.Average();
 
         //end of function; phase-plan finished
         }
@@ -324,12 +321,18 @@ namespace MOE.Common.Business.GreenTimeUtilization
         }
     }
 
-    public class AverageSplit //:GreenTimeUtilizationPhase
+    public class AverageSplit 
     {
-        public AverageSplit(TimeSpan greenDuration, DateTime StartAggTime)
-        {
-                AvgSplitValue = greenDuration.TotalSeconds;
+        [DataMember]
+        public DateTime StartTime { get; set; }
+        [DataMember]
+        public double AvgValue { get; set; }
 
+
+        public AverageSplit(DateTime startAggTime, List<double> greenDurationList)
+        {
+            AvgValue = greenDurationList.Average();
+            StartTime = startAggTime;
         }
 
     }
