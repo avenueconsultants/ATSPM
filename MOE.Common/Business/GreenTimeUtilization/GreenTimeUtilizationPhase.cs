@@ -38,9 +38,9 @@ namespace MOE.Common.Business.GreenTimeUtilization
         //public double ProgrammedGreenDuration { get; set; }
         //public Approach Approach { get; }  //?? not sure if I need this one
         [DataMember]
-        public DateTime StartTime { get; set; }
+        public DateTime StartDate { get; set; }
         [DataMember]
-        public DateTime EndTime { get; set; }
+        public DateTime EndDate { get; set; }
         //[DataMember]
         //public int PlanName { get; set; }
 
@@ -61,6 +61,8 @@ namespace MOE.Common.Business.GreenTimeUtilization
         {
             //define properties
             PhaseNumber = approach.ProtectedPhaseNumber;
+            StartDate = options.StartDate;
+            EndDate = options.EndDate;
 
             //define lists
             List<BarStack> Stacks = new List<BarStack>();
@@ -71,11 +73,11 @@ namespace MOE.Common.Business.GreenTimeUtilization
             SPM db = new SPM();
             var cel = ControllerEventLogRepositoryFactory.Create(db);
             var phaseEventNumbers = new List<int> { PHASE_BEGIN_GREEN, PHASE_BEGIN_YELLOW };
-            var phaseEvents = cel.GetEventsByEventCodesParam(options.SignalID, StartTime, EndTime.AddMinutes(options.SelectedAggSize), phaseEventNumbers, approach.ProtectedPhaseNumber); //goes until a bin after to make sure we get the whole green time of the last cycle within the anlaysis period
+            var phaseEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate.AddMinutes(options.SelectedAggSize), phaseEventNumbers, approach.ProtectedPhaseNumber); //goes until a bin after to make sure we get the whole green time of the last cycle within the anlaysis period
 
             //get a list of detections for that phase
             var detectorsToUse = approach.GetAllDetectorsOfDetectionType(4);  //should this really be approach-based adn not phase-based? 
-            var allDetectionEvents = cel.GetSignalEventsByEventCode(options.SignalID, StartTime, EndTime.AddMinutes(options.SelectedAggSize), DETECTOR_ON);
+            var allDetectionEvents = cel.GetSignalEventsByEventCode(options.SignalID, options.StartDate, options.EndDate.AddMinutes(options.SelectedAggSize), DETECTOR_ON);
             var detectionEvents = new List<Controller_Event_Log>();
             foreach (var detector in detectorsToUse)
             {
@@ -84,7 +86,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
             }
 
             //loop for each Agg bin
-            for (DateTime StartAggTime = options.StartDate; StartAggTime < options.EndDate; StartAggTime.AddMinutes(options.SelectedAggSize))
+            for (DateTime StartAggTime = options.StartDate; StartAggTime < options.EndDate; StartAggTime = StartAggTime.AddMinutes(options.SelectedAggSize))
             {
                 DateTime endAggTime = StartAggTime.AddMinutes(options.SelectedAggSize);
                 List<double> greenDurationList = new List<double>();
@@ -92,9 +94,9 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 int cycleCount = 0;
 
                 //determine timestamps of the first green and last yellow
-                var firstGreen = phaseEvents.Where(x => x.Timestamp > StartAggTime).OrderBy(x => x.Timestamp).FirstOrDefault();
-                var lastGreen = phaseEvents.Where(x => x.Timestamp < endAggTime).OrderByDescending(x => x.Timestamp).FirstOrDefault();
-                var lastYellow = phaseEvents.Where(x => x.Timestamp > lastGreen.Timestamp).OrderBy(x => x.Timestamp).FirstOrDefault();
+                var firstGreen = phaseEvents.Where(x => x.Timestamp > StartAggTime && x.EventCode == PHASE_BEGIN_GREEN).OrderBy(x => x.Timestamp).FirstOrDefault();
+                var lastGreen = phaseEvents.Where(x => x.Timestamp < endAggTime && x.EventCode == PHASE_BEGIN_GREEN).OrderByDescending(x => x.Timestamp).FirstOrDefault();
+                var lastYellow = phaseEvents.Where(x => x.Timestamp > lastGreen.Timestamp && x.EventCode == PHASE_BEGIN_YELLOW).OrderBy(x => x.Timestamp).FirstOrDefault();
 
                 //get the event lists for the agg bin
                 var aggDetections = detectionEvents
@@ -104,7 +106,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 var greenList = phaseEvents
                     .Where(x => x.EventCode == PHASE_BEGIN_GREEN &&
                                 x.Timestamp >= firstGreen.Timestamp &&
-                                x.Timestamp <= lastYellow.Timestamp)
+                                x.Timestamp <= lastGreen.Timestamp)
                     .OrderBy(x => x.Timestamp);
                 var yellowList = phaseEvents
                     .Where(x => x.EventCode == PHASE_BEGIN_YELLOW &&
@@ -162,8 +164,6 @@ namespace MOE.Common.Business.GreenTimeUtilization
             }
 
 
-
-            //end of function; phase-plan finished
         }
 
 
@@ -176,7 +176,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 .OrderByDescending(e => e.Timestamp).ToList();
             foreach (var tempSplitTime in tempSplitTimes)
             {
-                if (tempSplitTime.Timestamp <= StartTime)
+                if (tempSplitTime.Timestamp <= startDate)
                 {
                     splitLength = tempSplitTime.EventParam;
                     break;
@@ -292,7 +292,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
             SPM db = new SPM();
             var cel = ControllerEventLogRepositoryFactory.Create(db);
             var yrEventNumbers = new List<int> { PHASE_BEGIN_YELLOW, PHASE_END_RED_CLEAR };
-            var yrEvents = cel.GetEventsByEventCodesParam(options.SignalID, StartTime, EndTime, yrEventNumbers, approach.ProtectedPhaseNumber);
+            var yrEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate, yrEventNumbers, approach.ProtectedPhaseNumber);
             var yellowList = yrEvents.Where(x => x.EventCode == PHASE_BEGIN_YELLOW)
                 .OrderBy(x => x.Timestamp);
             var redList = yrEvents.Where(x => x.EventCode == PHASE_END_RED_CLEAR)
@@ -328,6 +328,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 }
             }
             //create Layers
+            Layers = new List<Layer>();
             int binStart = 0;
             for (int i = 0; i <= maxI; i++)
             {
