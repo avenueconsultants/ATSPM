@@ -19,11 +19,11 @@ namespace MOE.Common.Business.GreenTimeUtilization
 
         //define lists to be used
         [DataMember]
-        public List<BarStack> Stacks { get; }
+        public List<BarStack> Stacks { get; } = new List<BarStack>();
         [DataMember]
-        public List<AverageSplit> AvgSplits { get; }
+        public List<AverageSplit> AvgSplits { get; } = new List<AverageSplit>();
         [DataMember]
-        public List<ProgrammedSplit> ProgSplits { get; }
+        public List<ProgrammedSplit> ProgSplits { get; } = new List<ProgrammedSplit>();
         //[DataMember]
         //public List<double> BinAvgList { get; } = new List<double>(new double[99]);
 
@@ -65,9 +65,9 @@ namespace MOE.Common.Business.GreenTimeUtilization
             EndDate = options.EndDate;
 
             //define lists
-            List<BarStack> Stacks = new List<BarStack>();
-            List<AverageSplit> AvgSplits = new List<AverageSplit>();
-            List<ProgrammedSplit> ProgSplits = new List<ProgrammedSplit>();
+            //List<BarStack> Stacks = new List<BarStack>();
+            //List<AverageSplit> AvgSplits = new List<AverageSplit>();
+            //List<ProgrammedSplit> ProgSplits = new List<ProgrammedSplit>();
 
             //get a list of cycle events
             SPM db = new SPM();
