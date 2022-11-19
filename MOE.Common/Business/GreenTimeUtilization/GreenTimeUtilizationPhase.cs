@@ -24,50 +24,60 @@ namespace MOE.Common.Business.GreenTimeUtilization
         public List<AverageSplit> AvgSplits { get; } = new List<AverageSplit>();
         [DataMember]
         public List<ProgrammedSplit> ProgSplits { get; } = new List<ProgrammedSplit>();
-        //[DataMember]
-        //public List<double> BinAvgList { get; } = new List<double>(new double[99]);
-
-        //[DataMember]
-        //public List<int> BinMaxList { get; } = new List<int>(new int[99]);
-        //public List<double> GreenDurationList { get; } = new List<double>();
-
-        //define other variables to be transferred
-        //[DataMember]
-        //public double AvgGreenDuration { get; set; }
-        //[DataMember]
-        //public double ProgrammedGreenDuration { get; set; }
-        //public Approach Approach { get; }  //?? not sure if I need this one
         [DataMember]
         public DateTime StartDate { get; set; }
         [DataMember]
         public DateTime EndDate { get; set; }
-        //[DataMember]
-        //public int PlanName { get; set; }
-
-        //public int PlanSort { get; set; }
         [DataMember]
         public int PhaseNumber { get; set; }
-
-        //public string PhaseSort { get; set; }
         [DataMember]
         public string SignalID { get; set; }
+        [DataMember]
+        public string MeasureName { get; set; }
+        [DataMember]
+        public string SignalLocation { get; set; }
+        [DataMember]
+        public string PhaseName { get; set; }
 
         //define private variables
         private int splitLengthEventCode { get; set; }
         private double splitLength { get; set; }
         private double durYellowRed { get; set; }
 
+        private static readonly ISignalsRepository signalsRepository =
+            SignalsRepositoryFactory.Create();
+
+        private static readonly IMetricTypeRepository metricTypesRepository =
+            MetricTypeRepositoryFactory.Create();
+
         public GreenTimeUtilizationPhase(Approach approach, GreenTimeUtilizationOptions options) // the plans/splits input is still TBD
         {
+            bool getPermissivePhase = false; // might need to move the setting of this to the Options page instead of here; for now it is set to false because I haven'tfully incorporated getPermissivePhase yet
+
             //define properties
             PhaseNumber = approach.ProtectedPhaseNumber;
             StartDate = options.StartDate;
             EndDate = options.EndDate;
-
-            //define lists
-            //List<BarStack> Stacks = new List<BarStack>();
-            //List<AverageSplit> AvgSplits = new List<AverageSplit>();
-            //List<ProgrammedSplit> ProgSplits = new List<ProgrammedSplit>();
+            SignalID = options.SignalID;
+            SelectedBinSize = options.SelectedBinSize;
+            SelectedAggSize = options.SelectedAggSize;
+            ShowAverageSplit = options.ShowAverageSplit;
+            ShowProgrammedSplit = options.ShowProgrammedSplit;
+            MetricTypeID = options.MetricTypeID;
+            MeasureName = metricTypesRepository.GetMetricsByID(MetricTypeID).ChartName;//ChartTitleFactory.GetChartName(MetricTypeID);
+            SignalLocation = signalsRepository.GetSignalLocation(SignalID); //ChartTitleFactory.GetSignalLocationAndDateRange(SignalID, StartDate, EndDate); 
+            string phaseNumberDescription;
+            int phaseNum = getPermissivePhase ? approach.PermissivePhaseNumber.Value : approach.ProtectedPhaseNumber; //this and the if statement below were taken from ChartTitleFactory.GetPhaseAndPhaseDescriptions
+            if ((approach.IsProtectedPhaseOverlap && !getPermissivePhase) ||
+                (approach.IsPermissivePhaseOverlap && getPermissivePhase))
+            {
+                phaseNumberDescription = "Overlap " + phaseNum + ": " + approach.Description;
+            }
+            else
+            {
+                phaseNumberDescription = "Phase " + phaseNum + ": " + approach.Description;
+            }
+            PhaseName = phaseNumberDescription;
 
             //get a list of cycle events
             SPM db = new SPM();
@@ -143,7 +153,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
                         TimeSpan timeSinceGreenStart = detection.Timestamp - green.Timestamp;
                         var binnumber = (int)(timeSinceGreenStart.TotalSeconds / options.SelectedBinSize);
                         BinValueList[binnumber] = BinValueList[binnumber] + 1;
-                        //might want to add a claculation for the ax bin used so it can be sent as a charting value
+                        //might want to add a calculation for the max bin used so it can be sent as a charting value
                     }
 
                 }
@@ -159,7 +169,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
             foreach (Plan analysisplan in plans)
             {
                 //GetProgrammedSplitTimesInAnalysisPeriod(approach.ProtectedPhaseNumber, analysisplan, options.EndDate);
-                GetProgrammedSplitTime(approach.ProtectedPhaseNumber, options.StartDate, options.EndDate);                
+                GetProgrammedSplitTime(approach.ProtectedPhaseNumber, analysisplan.StartTime, analysisplan.EndTime.AddMinutes(-1));                
                 ProgSplits.Add(new ProgrammedSplit(analysisplan, options.StartDate, splitLength, durYellowRed));
             }
 
@@ -205,7 +215,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
         }
 
 
-        void GetEventCodeForPhase(int PhaseNumber)  // i think this might be better suited moved over to the options file now. so splits for a phase can be sent into this file
+        void GetEventCodeForPhase(int PhaseNumber)  
         {
             switch (PhaseNumber)
             {
@@ -369,13 +379,12 @@ namespace MOE.Common.Business.GreenTimeUtilization
 
     }
 
-    public class ProgrammedSplit //:GreenTimeUtilizationPhase
+    public class ProgrammedSplit 
     {
-        // data memberes are: starttime and progvalue
         [DataMember]
-        DateTime StartTime { get; set; }
+        public DateTime StartTime { get; set; }
         [DataMember]
-        double ProgValue { get; set; }
+        public double ProgValue { get; set; }
 
 
         public ProgrammedSplit(Plan analysisPlan, DateTime analysisStart, double splitLength, double durYR)

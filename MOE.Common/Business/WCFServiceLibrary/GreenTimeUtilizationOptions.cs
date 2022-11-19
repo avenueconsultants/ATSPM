@@ -54,19 +54,6 @@ namespace MOE.Common.Business.WCFServiceLibrary
 
         public Models.Signal Signal { get; set; }
 
-        //define sorting variables
-        //public int PlanSort { get; set; }
-        //public string PhaseSort { get; set; }
-
-        //get plan starttime, endtime, and number
-        //public DateTime StartTime { get; set; }
-        //public DateTime EndTime { get; set; }
-        //public int PlanName { get; set; }
-
-        //other variables
-        //public int splitLengthEventCode { get; set; }
-        //public int SplitLength { get; set; }
-
         public string JsonText { get; set; }
 
 public override List<string> CreateMetric()
@@ -84,7 +71,6 @@ public override List<string> CreateMetric()
                 foreach (Approach approach in metricApproaches)
                 {
                     greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this));
-                    var chart = 2;
                 }
                 
                 greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PhaseNumber).ToList();
