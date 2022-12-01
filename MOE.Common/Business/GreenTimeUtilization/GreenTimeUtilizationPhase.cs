@@ -38,6 +38,10 @@ namespace MOE.Common.Business.GreenTimeUtilization
         public string SignalLocation { get; set; }
         [DataMember]
         public string PhaseName { get; set; }
+        [DataMember]
+        public bool GetPermissivePhase { get; }
+        [DataMember]
+        public string PhaseNumberSort { get; set; }
 
         //define private variables
         private int splitLengthEventCode { get; set; }
@@ -50,12 +54,10 @@ namespace MOE.Common.Business.GreenTimeUtilization
         private static readonly IMetricTypeRepository metricTypesRepository =
             MetricTypeRepositoryFactory.Create();
 
-        public GreenTimeUtilizationPhase(Approach approach, GreenTimeUtilizationOptions options) // the plans/splits input is still TBD
+        public GreenTimeUtilizationPhase(Approach approach, GreenTimeUtilizationOptions options, bool getPermissivePhase) // the plans/splits input is still TBD
         {
-            bool getPermissivePhase = false; // might need to move the setting of this to the Options page instead of here; for now it is set to false because I haven'tfully incorporated getPermissivePhase yet
-
             //define properties
-            PhaseNumber = approach.ProtectedPhaseNumber;
+            PhaseNumberSort = getPermissivePhase ? approach.PermissivePhaseNumber.Value.ToString() + "-1" : approach.ProtectedPhaseNumber.ToString() + "-2";
             StartDate = options.StartDate;
             EndDate = options.EndDate;
             SignalID = options.SignalID;
@@ -66,16 +68,17 @@ namespace MOE.Common.Business.GreenTimeUtilization
             MetricTypeID = options.MetricTypeID;
             MeasureName = metricTypesRepository.GetMetricsByID(MetricTypeID).ChartName;//ChartTitleFactory.GetChartName(MetricTypeID);
             SignalLocation = signalsRepository.GetSignalLocation(SignalID); //ChartTitleFactory.GetSignalLocationAndDateRange(SignalID, StartDate, EndDate); 
+            GetPermissivePhase = getPermissivePhase;
             string phaseNumberDescription;
-            int phaseNum = getPermissivePhase ? approach.PermissivePhaseNumber.Value : approach.ProtectedPhaseNumber; //this and the if statement below were taken from ChartTitleFactory.GetPhaseAndPhaseDescriptions
+            PhaseNumber = getPermissivePhase ? approach.PermissivePhaseNumber.Value : approach.ProtectedPhaseNumber; //this and the if statement below were taken from ChartTitleFactory.GetPhaseAndPhaseDescriptions
             if ((approach.IsProtectedPhaseOverlap && !getPermissivePhase) ||
                 (approach.IsPermissivePhaseOverlap && getPermissivePhase))
             {
-                phaseNumberDescription = "Overlap " + phaseNum + ": " + approach.Description;
+                phaseNumberDescription = "Overlap " + PhaseNumber + ": " + approach.Description;
             }
             else
             {
-                phaseNumberDescription = "Phase " + phaseNum + ": " + approach.Description;
+                phaseNumberDescription = "Phase " + PhaseNumber + ": " + approach.Description;
             }
             PhaseName = phaseNumberDescription;
 
@@ -83,10 +86,10 @@ namespace MOE.Common.Business.GreenTimeUtilization
             SPM db = new SPM();
             var cel = ControllerEventLogRepositoryFactory.Create(db);
             var phaseEventNumbers = new List<int> { PHASE_BEGIN_GREEN, PHASE_BEGIN_YELLOW };
-            var phaseEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate.AddMinutes(options.SelectedAggSize), phaseEventNumbers, approach.ProtectedPhaseNumber); //goes until a bin after to make sure we get the whole green time of the last cycle within the anlaysis period
+            var phaseEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate.AddMinutes(options.SelectedAggSize), phaseEventNumbers, PhaseNumber); //goes until a bin after to make sure we get the whole green time of the last cycle within the anlaysis period
 
             //get a list of detections for that phase
-            var detectorsToUse = approach.GetAllDetectorsOfDetectionType(4);  //should this really be approach-based adn not phase-based? 
+            var detectorsToUse = approach.GetAllDetectorsOfDetectionType(4);  //should this really be approach-based and not phase-based? - I think so because of getpermissivephase
             var allDetectionEvents = cel.GetSignalEventsByEventCode(options.SignalID, options.StartDate, options.EndDate.AddMinutes(options.SelectedAggSize), DETECTOR_ON);
             var detectionEvents = new List<Controller_Event_Log>();
             foreach (var detector in detectorsToUse)
@@ -105,6 +108,10 @@ namespace MOE.Common.Business.GreenTimeUtilization
 
                 //determine timestamps of the first green and last yellow
                 var firstGreen = phaseEvents.Where(x => x.Timestamp > StartAggTime && x.EventCode == PHASE_BEGIN_GREEN).OrderBy(x => x.Timestamp).FirstOrDefault();
+                if (firstGreen is null || firstGreen.Timestamp > endAggTime)
+                {
+                    continue; //skip this agg and go to the next if there is no green at all or if there isw no green in the agg period
+                }
                 var lastGreen = phaseEvents.Where(x => x.Timestamp < endAggTime && x.EventCode == PHASE_BEGIN_GREEN).OrderByDescending(x => x.Timestamp).FirstOrDefault();
                 var lastYellow = phaseEvents.Where(x => x.Timestamp > lastGreen.Timestamp && x.EventCode == PHASE_BEGIN_YELLOW).OrderBy(x => x.Timestamp).FirstOrDefault();
 
@@ -165,11 +172,11 @@ namespace MOE.Common.Business.GreenTimeUtilization
 
             //get plans
             var plans = PlanFactory.GetSplitMonitorPlans(options.StartDate, options.EndDate, SignalID);
-            GetYellowRedTime(approach, options);
+            GetYellowRedTime(approach, options, PhaseNumber);
             foreach (Plan analysisplan in plans)
             {
                 //GetProgrammedSplitTimesInAnalysisPeriod(approach.ProtectedPhaseNumber, analysisplan, options.EndDate);
-                GetProgrammedSplitTime(approach.ProtectedPhaseNumber, analysisplan.StartTime, analysisplan.EndTime.AddMinutes(-1));                
+                GetProgrammedSplitTime(PhaseNumber, analysisplan.StartTime, analysisplan.EndTime.AddMinutes(-1));                 
                 ProgSplits.Add(new ProgrammedSplit(analysisplan, options.StartDate, splitLength, durYellowRed));
             }
 
@@ -297,12 +304,12 @@ namespace MOE.Common.Business.GreenTimeUtilization
             }
         }
 
-        void GetYellowRedTime(Approach approach, GreenTimeUtilizationOptions options)
+        void GetYellowRedTime(Approach approach, GreenTimeUtilizationOptions options, int phaseNumber)
         {
             SPM db = new SPM();
             var cel = ControllerEventLogRepositoryFactory.Create(db);
             var yrEventNumbers = new List<int> { PHASE_BEGIN_YELLOW, PHASE_END_RED_CLEAR };
-            var yrEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate, yrEventNumbers, approach.ProtectedPhaseNumber);
+            var yrEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate, yrEventNumbers, phaseNumber); 
             var yellowList = yrEvents.Where(x => x.EventCode == PHASE_BEGIN_YELLOW)
                 .OrderBy(x => x.Timestamp);
             var redList = yrEvents.Where(x => x.EventCode == PHASE_END_RED_CLEAR)
@@ -310,8 +317,15 @@ namespace MOE.Common.Business.GreenTimeUtilization
             var startyellow = yellowList.FirstOrDefault();
             var endRedClear = redList.Where(x => x.Timestamp > startyellow.Timestamp).OrderBy(x => x.Timestamp)
                     .FirstOrDefault();
-            TimeSpan spanYellowRed = endRedClear.Timestamp - startyellow.Timestamp;
-            durYellowRed = spanYellowRed.TotalSeconds;
+            if (startyellow is null || endRedClear is null)
+            {
+                durYellowRed = 0;
+            }
+            else
+            {
+                TimeSpan spanYellowRed = endRedClear.Timestamp - startyellow.Timestamp;
+                durYellowRed = spanYellowRed.TotalSeconds;
+            }
         }
 
 

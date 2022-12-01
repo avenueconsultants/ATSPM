@@ -70,10 +70,16 @@ public override List<string> CreateMetric()
                 List<GreenTimeUtilizationPhase> greenTimeUtilizationPhases = new List<GreenTimeUtilizationPhase>();
                 foreach (Approach approach in metricApproaches)
                 {
-                    greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this));
+                    if (approach.PermissivePhaseNumber != null && approach.PermissivePhaseNumber > 0)
+                    {
+                        greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this, true));
+                    }
+                    if (approach.ProtectedPhaseNumber > 0)
+                    {
+                        greenTimeUtilizationPhases.Add(new GreenTimeUtilizationPhase(approach, this, false));
+                    }
                 }
-                
-                greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PhaseNumber).ToList();
+                greenTimeUtilizationPhases = greenTimeUtilizationPhases.OrderBy(s => s.PhaseNumberSort).ToList();
                 foreach (var greenTimeUtilizationPhase in greenTimeUtilizationPhases)
                 {
                     //JsonSerializer.Serialize(greenTimeUtilizationPhase);
