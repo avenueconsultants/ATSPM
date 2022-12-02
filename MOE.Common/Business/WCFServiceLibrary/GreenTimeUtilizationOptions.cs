@@ -84,6 +84,7 @@ public override List<string> CreateMetric()
                 {
                     //JsonSerializer.Serialize(greenTimeUtilizationPhase);
                     JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhase);
+                    //JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhases);
                     System.Diagnostics.Debug.WriteLine(JsonText);
                     //JsonText = JsonConvert.SerializeObject(greenTimeUtilizationPhase.BinAvgList);
                     //System.Diagnostics.Debug.WriteLine(JsonText);

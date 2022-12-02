@@ -153,14 +153,24 @@ namespace MOE.Common.Business.GreenTimeUtilization
                         .OrderBy(x => x.Timestamp).ToList();
                     if (!greenDetectionsList.Any())
                         continue;
+                    //maybe add a catch here where you make sure the BinValue list has as many indexes as it would need to cover the whole green (and add more if not)
+                        //****or maybe add a catch inside the foreach loop below that checks if the intended index exists - and add enough to make sure it does ****
 
                     //add 1 to the bin value for each detection occuring during green
                     foreach (var detection in greenDetectionsList)
                     {
                         TimeSpan timeSinceGreenStart = detection.Timestamp - green.Timestamp;
                         var binnumber = (int)(timeSinceGreenStart.TotalSeconds / options.SelectedBinSize);
+                        if (BinValueList.Count < binnumber)
+                        {
+                            int howMany = binnumber - BinValueList.Count+1;  //check the numbering on this, might need to add 1, etc)
+                            for (int i = 1; i <= howMany; i++)
+                            {
+                                BinValueList.Add(0); //add a new value of 0 -- not sure if this is the right statement yet
+                            }
+                        }
                         BinValueList[binnumber] = BinValueList[binnumber] + 1;
-                        //might want to add a calculation for the max bin used so it can be sent as a charting value
+
                     }
 
                 }
@@ -344,7 +354,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
             StartTime = startAggTime;
             //find the max layers number that is used
             int maxI = 0;
-            for (int i = 0; i < 99; i++)
+            for (int i = 0; i < binValueList.Count; i++)
             {
                 if (binValueList[i] != 0 && i > maxI)
                 {
@@ -411,7 +421,15 @@ namespace MOE.Common.Business.GreenTimeUtilization
             {
                 StartTime = analysisStart;
             }
-            ProgValue = splitLength - durYR;
+
+            if (splitLength >= durYR) 
+            {
+                ProgValue = splitLength - durYR;
+            }
+            else
+            {
+                ProgValue = 0;
+            }
         }
 
     }
