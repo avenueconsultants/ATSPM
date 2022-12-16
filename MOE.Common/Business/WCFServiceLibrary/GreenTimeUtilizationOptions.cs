@@ -36,11 +36,11 @@ namespace MOE.Common.Business.WCFServiceLibrary
         }
 
         [Required]
-        [Display(Name = "Green Time Bin Size (seconds; range is 2 to 10)")]
+        [Display(Name = "Y-axis: Green Time Bin Size (seconds; range is 2 to 10)")]
         [DataMember]
         public int SelectedBinSize { get; set; }
 
-        [Display(Name = "Time of Day Aggregation (minutes; range is 5 to 30)")]
+        [Display(Name = "X-axis: Time of Day Bin Duration (minutes; range is 5 to 30)")]
         [DataMember]
         public int SelectedAggSize { get; set; }
 
