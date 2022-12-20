@@ -87,6 +87,11 @@ namespace MOE.Common.Business.GreenTimeUtilization
             var cel = ControllerEventLogRepositoryFactory.Create(db);
             var phaseEventNumbers = new List<int> { PHASE_BEGIN_GREEN, PHASE_BEGIN_YELLOW };
             var phaseEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate.AddMinutes(options.SelectedAggSize), phaseEventNumbers, PhaseNumber); //goes until a bin after to make sure we get the whole green time of the last cycle within the anlaysis period
+            var checkAgainstEvents = new List<Controller_Event_Log>();
+            if (getPermissivePhase == true && approach.ProtectedPhaseNumber != 0)   // if it's a permissive phase, it will need to be checked against the protected green/yellow events
+            {
+                checkAgainstEvents = cel.GetEventsByEventCodesParam(options.SignalID, options.StartDate, options.EndDate.AddMinutes(options.SelectedAggSize), phaseEventNumbers, approach.ProtectedPhaseNumber);
+            }
 
             //get a list of detections for that phase
             var detectorsToUse = approach.GetAllDetectorsOfDetectionType(4);  //should this really be approach-based and not phase-based? - I think so because of getpermissivephase
@@ -121,28 +126,34 @@ namespace MOE.Common.Business.GreenTimeUtilization
                                 x.Timestamp <= lastYellow.Timestamp)
                     .OrderBy(x => x.Timestamp);
                 var greenList = phaseEvents
-                    .Where(x => x.EventCode == PHASE_BEGIN_GREEN &&
-                                x.Timestamp >= firstGreen.Timestamp &&
-                                x.Timestamp <= lastGreen.Timestamp)
-                    .OrderBy(x => x.Timestamp);
+                        .Where(x => x.EventCode == PHASE_BEGIN_GREEN &&
+                                    x.Timestamp >= firstGreen.Timestamp &&
+                                    x.Timestamp <= lastGreen.Timestamp)
+                        .OrderBy(x => x.Timestamp);
                 var yellowList = phaseEvents
                     .Where(x => x.EventCode == PHASE_BEGIN_YELLOW &&
                                 x.Timestamp >= firstGreen.Timestamp &&
                                 x.Timestamp <= lastYellow.Timestamp)
                     .OrderBy(x => x.Timestamp);
+                if (getPermissivePhase && checkAgainstEvents != null)
+                {
+                    var yProtectedEvents = checkAgainstEvents.Where(x => x.EventCode == PHASE_BEGIN_YELLOW);
+                    var gProtectedEvents = checkAgainstEvents.Where(x => x.EventCode == PHASE_BEGIN_GREEN);
+                    greenList = (IOrderedEnumerable<Controller_Event_Log>)CheckProtectedGreens(greenList, yellowList, gProtectedEvents, yProtectedEvents); //redefine the greenList after editng the green values to start at the beginning of the protected yellow phases if there is overlapping green time between the protected nad permissive phases (only happens with doghouses)
+                }
 
                 //pair each green with a yellow
                 foreach (var green in greenList)
                 {
                     //Find the corresponding yellow
-                    var yellow = yellowList.Where(x => x.Timestamp > green.Timestamp).OrderBy(x => x.Timestamp)
+                    var yellow = yellowList.Where(x => x.Timestamp >= green.Timestamp).OrderBy(x => x.Timestamp)
                         .FirstOrDefault();
                     if (yellow == null)
                         continue;
 
                     //get the green duration
                     TimeSpan greenDuration = yellow.Timestamp - green.Timestamp;
-                    greenDurationList.Add(greenDuration.TotalSeconds);
+                    greenDurationList.Add(greenDuration.TotalSeconds);  //if zero, maybe don't add it?  
 
                     //count the number of cycles
                     cycleCount++;
@@ -336,6 +347,37 @@ namespace MOE.Common.Business.GreenTimeUtilization
                 TimeSpan spanYellowRed = endRedClear.Timestamp - startyellow.Timestamp;
                 durYellowRed = spanYellowRed.TotalSeconds;
             }
+        }
+
+        IEnumerable<Controller_Event_Log> CheckProtectedGreens(IEnumerable<Controller_Event_Log> gPermissiveEvents, IEnumerable<Controller_Event_Log> yPermissiveEvents, IEnumerable<Controller_Event_Log> gProtectedEvents, IEnumerable<Controller_Event_Log> yProtectedEvents)
+        {
+            foreach (var gPermissive in gPermissiveEvents)
+            {
+                var gProtected = gProtectedEvents.Where(x => x.Timestamp == gPermissive.Timestamp).OrderBy(x => x.Timestamp)
+                    .FirstOrDefault();
+                if (gProtected == null)
+                {
+                    continue;
+                }
+                var yProtected = yProtectedEvents.Where(x => x.Timestamp > gProtected.Timestamp).OrderBy(x => x.Timestamp)
+                    .FirstOrDefault();
+                if(yProtected == null)
+                {
+                    continue;
+                }
+                var yPermissive = yPermissiveEvents.Where(x => x.Timestamp > gPermissive.Timestamp).OrderBy(x => x.Timestamp)
+                    .FirstOrDefault();
+                if (yPermissive.Timestamp > yProtected.Timestamp)
+                {
+                    gPermissive.Timestamp = yProtected.Timestamp;
+                }
+                else
+                {
+                    gPermissive.Timestamp = yPermissive.Timestamp;
+                }
+            }
+
+            return gPermissiveEvents.OrderBy(x => x.Timestamp);
         }
 
 
