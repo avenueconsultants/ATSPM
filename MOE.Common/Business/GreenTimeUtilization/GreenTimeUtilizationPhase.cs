@@ -101,7 +101,7 @@ namespace MOE.Common.Business.GreenTimeUtilization
             //loop for each Agg bin
             for (DateTime StartAggTime = options.StartDate; StartAggTime < options.EndDate; StartAggTime = StartAggTime.AddMinutes(options.SelectedAggSize))
             {
-                DateTime endAggTime = StartAggTime.AddMinutes(options.SelectedAggSize);
+                DateTime endAggTime = StartAggTime.AddMinutes(options.SelectedAggSize) <= options.EndDate ? StartAggTime.AddMinutes(options.SelectedAggSize) : options.EndDate; //make the enddate the end of the bin or the end of the ananlysis period, whichever is sooner
                 List<double> greenDurationList = new List<double>();
                 List<int> BinValueList = new List<int>(new int[99]);
                 int cycleCount = 0;
